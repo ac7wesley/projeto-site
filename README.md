@@ -1,2 +1,3 @@
-# projeto-site
- Projeoto Site com hospedagem no GitHub
+# Projeto Site
+
+Projeto de site com hospedagem no GitHub.
