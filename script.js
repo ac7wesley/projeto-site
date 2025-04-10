@@ -4,7 +4,7 @@ const EMAIL_RECIPIENT = 'logos@logoscor.com.br';
 // Configurações do SendPulse SMTP
 const SENDPULSE_SMTP = {
   host: 'smtp-pulse.com',
-  port: 2525,
+  port: 465,
   secure: true,
   auth: {
     user: 'ac7wesley@gmail.com',
@@ -602,51 +602,50 @@ Valor ideal de Parcela: ${Number(dadosSimulacao.parcela).toLocaleString('pt-BR',
 Profissão: ${dadosSimulacao.profissao}
 Como nos conheceu: ${dadosSimulacao.origem}`;
 
-    // Mostrar interface de sucesso e abrir WhatsApp independentemente do envio do email
-    setTimeout(() => {
-      // Ocultar formulário e mostrar confirmação
-      document.getElementById('formEtapa2').classList.add('hidden');
-      document.getElementById('confirmacaoEnvio').classList.remove('hidden');
-      
-      // Limpar dados da sessão
-      sessionStorage.removeItem('dadosSimulacao');
-      
-      // Restaurar botão
-      botaoEnviar.innerHTML = textoOriginal;
-      botaoEnviar.disabled = false;
-      
-      // Abrir WhatsApp imediatamente
-      log("Abrindo WhatsApp...", 'info');
-      enviarWhatsApp(dadosPessoais, dadosSimulacao);
-      
-    }, 500);
+    // Enviar via EmailJS
+    const templateParams = {
+      to_name: "LogosCor",
+      from_name: dadosPessoais.nome,
+      reply_to: dadosPessoais.email,
+      subject: `Nova Simulação de Consórcio - ${dadosPessoais.nome}`,
+      message: `NOVA SIMULAÇÃO DE CONSÓRCIO\n\nDADOS PESSOAIS:\n${dadosPessoaisTexto}\n\nDETALHES DA SIMULAÇÃO:\n${detalhesSimulacaoTexto}`
+    };
 
-    // Tentar enviar o email via SendPulse primeiro, com fallback para EmailJS
-    log("Tentando enviar via SendPulse...", 'info');
-    enviarEmailViaSendPulse(dadosPessoais, dadosSimulacao, dadosPessoaisTexto, detalhesSimulacaoTexto)
-      .then(sucesso => {
-        if (sucesso) {
-          log("Email enviado com sucesso via SendPulse!", 'sucesso');
-        } else {
-          log("Falha no envio do email via SendPulse, tentando EmailJS como fallback", 'aviso');
-          // Tentar EmailJS como fallback
-          return enviarEmailViaEmailJS(dadosPessoais, dadosSimulacao, dadosPessoaisTexto, detalhesSimulacaoTexto);
-        }
+    // Inicializar EmailJS
+    emailjs.init(EMAIL_USER_ID);
+
+    // Enviar email
+    emailjs.send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, templateParams)
+      .then(function(response) {
+        log("Email enviado com sucesso!", 'sucesso', response);
       })
-      .then(sucessoFallback => {
-        if (sucessoFallback) {
-          log("Email enviado com sucesso via fallback EmailJS!", 'sucesso');
-        }
+      .catch(function(error) {
+        log("Erro ao enviar email", 'erro', error);
       })
-      .catch(error => {
-        log("Erro ao enviar email, mas o processo continua", 'erro', error);
+      .finally(function() {
+        // Sempre mostrar confirmação e abrir WhatsApp
+        setTimeout(() => {
+          // Ocultar formulário e mostrar confirmação
+          document.getElementById('formEtapa2').classList.add('hidden');
+          document.getElementById('confirmacaoEnvio').classList.remove('hidden');
+          
+          // Limpar dados da sessão
+          sessionStorage.removeItem('dadosSimulacao');
+          
+          // Restaurar botão
+          botaoEnviar.innerHTML = textoOriginal;
+          botaoEnviar.disabled = false;
+          
+          // Abrir WhatsApp
+          log("Abrindo WhatsApp...", 'info');
+          enviarWhatsApp(dadosPessoais, dadosSimulacao);
+        }, 500);
       });
     
   } catch (e) {
     log("Erro ao processar formulário", 'erro', e);
     
-    // Mesmo com erro, vamos prosseguir com a abertura do WhatsApp
-    // Ocultar formulário e mostrar confirmação
+    // Mesmo com erro, mostrar confirmação e abrir WhatsApp
     document.getElementById('formEtapa2').classList.add('hidden');
     document.getElementById('confirmacaoEnvio').classList.remove('hidden');
     
@@ -654,15 +653,8 @@ Como nos conheceu: ${dadosSimulacao.origem}`;
     botaoEnviar.innerHTML = textoOriginal;
     botaoEnviar.disabled = false;
     
-    // Abrir WhatsApp mesmo com erro
-    log("Abrindo WhatsApp mesmo com erro...", 'info');
+    // Abrir WhatsApp
     enviarWhatsApp(dadosPessoais, dadosSimulacao);
-    
-    // Redirecionar para o site após um breve delay
-    //setTimeout(() => {
-    //  log("Redirecionando...", 'info');
-    //  window.location.href = 'https://www.logoscor.com.br';
-    //}, 10000);
   }
 }
 
