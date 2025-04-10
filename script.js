@@ -13,8 +13,8 @@ const DEBUG = true; // Ativar ou desativar logs de depuração
 
 // Configuração do SendPulse
 const SENDPULSE_API = {
-  userId: "ac7wesley@gmail.com",
-  secret: "AY4fncBqNf",
+  userId: "21b3d17673984abf86ad76aaba6cc371",
+  secret: "528c8261e0755be29840f9bc06070fa6",
   tokenStorage: "localStorage",
   storagePrefix: "sp_"
 };
