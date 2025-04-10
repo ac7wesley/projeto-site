@@ -595,7 +595,7 @@ async function enviarEmailViaSendPulse(dadosPessoais, dadosSimulacao, dadosPesso
     };
 
     // Enviar usando SMTP
-    const response = await fetch('smtp-pulse.com', {
+    const response = await fetch('https://api.sendpulse.com/smtp/emails', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
