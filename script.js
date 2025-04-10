@@ -3,8 +3,8 @@ const WHATSAPP_NUMBER = '556230153001';
 const EMAIL_RECIPIENT = 'logos@logoscor.com.br';
 // Configurações do SendPulse SMTP
 const SENDPULSE_SMTP = {
-  user: 'ac7wesley@gmail.com',
-  pass: 'AY4fncBqNf'
+  user: '21b3d17673984abf86ad76aaba6cc371',
+  pass: '528c8261e0755be29840f9bc06070fa6'
 };
 // Manter EmailJS como fallback
 const EMAIL_SERVICE_ID = "service_e5q4p1c";
