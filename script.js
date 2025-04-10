@@ -11,6 +11,14 @@ const EMAIL_TEMPLATE_ID = "template_p4qs2s9";
 const EMAIL_USER_ID = "3V_t4CeqYZ1q-BVVJ";
 const DEBUG = true; // Ativar ou desativar logs de depuração
 
+// Configuração do SendPulse
+const SENDPULSE_API = {
+  userId: "ac7wesley@gmail.com",
+  secret: "AY4fncBqNf",
+  tokenStorage: "localStorage",
+  storagePrefix: "sp_"
+};
+
 // Função de depuração
 function log(mensagem, tipo = 'info', dados = null) {
   if (!DEBUG) return;
@@ -494,102 +502,117 @@ function enviarWhatsApp(dadosPessoais, dadosSimulacao) {
   }
 }
 
-// Função para enviar email via SendPulse API
-async function enviarEmailViaSendPulse(dadosPessoais, dadosSimulacao, dadosPessoaisTexto, detalhesSimulacaoTexto) {
+// Função para enviar email via SendPulse
+async function enviarEmailSendPulse(dados) {
   try {
-    log("Preparando envio via SendPulse...", 'info');
-    
-    // Verificar se as credenciais foram configuradas
-    if (!SENDPULSE_API_USER_ID || !SENDPULSE_API_SECRET) {
-      log("Credenciais do SendPulse não configuradas", 'erro');
-      throw new Error("Credenciais do SendPulse não configuradas");
-    }
-
-    // Construir o corpo do email
-    const assuntoEmail = `Nova Simulação de Consórcio - ${dadosPessoais.nome}`;
-    const corpoHtml = `
-    <h2>NOVA SIMULAÇÃO DE CONSÓRCIO</h2>
-    <h3>DADOS PESSOAIS:</h3>
-    <p>${dadosPessoaisTexto.replace(/\n/g, '<br>')}</p>
-    <h3>DETALHES DA SIMULAÇÃO:</h3>
-    <p>${detalhesSimulacaoTexto.replace(/\n/g, '<br>')}</p>
-    <p><em>Esta mensagem foi enviada automaticamente a partir do formulário de simulação em www.logoscor.com.br.</em></p>`;
-
-    // Dados para a API do SendPulse
-    const emailData = {
-      email: {
-        html: corpoHtml,
-        text: `NOVA SIMULAÇÃO DE CONSÓRCIO\n\nDADOS PESSOAIS:\n${dadosPessoaisTexto}\n\nDETALHES DA SIMULAÇÃO:\n${detalhesSimulacaoTexto}\n\nEsta mensagem foi enviada automaticamente a partir do formulário de simulação em www.logoscor.com.br.`,
-        subject: assuntoEmail,
-        from: {
-          name: "Simulação LogosCor",
-          email: "simulacao@logoscor.com.br"
-        },
-        to: [
-          {
-            name: "LogosCor",
-            email: EMAIL_RECIPIENT
-          },
-          {
-            name: "Wesley",
-            email: "wesley@logoscor.com.br"
-          }
-        ]
-      }
-    };
-
-    // Primeiro obter o token de acesso
-    log("Obtendo token de acesso do SendPulse...", 'info');
-    const tokenResponse = await fetch("https://api.sendpulse.com/oauth/access_token", {
-      method: "POST",
+    const response = await fetch('https://api.sendpulse.com/smtp/emails', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${SENDPULSE_API.token}`
       },
       body: JSON.stringify({
-        grant_type: "client_credentials",
-        client_id: SENDPULSE_API_USER_ID,
-        client_secret: SENDPULSE_API_SECRET
+        "email": {
+          "html": `
+            <h2>Nova Solicitação de Consórcio</h2>
+            <h3>Dados Pessoais:</h3>
+            <p>Nome: ${dados.nome}</p>
+            <p>Email: ${dados.email}</p>
+            <p>Telefone: ${dados.telefone}</p>
+            <p>Idade: ${dados.idade}</p>
+            <p>Cidade/UF: ${dados.cidade}-${dados.estado}</p>
+            
+            <h3>Detalhes do Consórcio:</h3>
+            <p>Objetivo: ${dados.objetivo}</p>
+            <p>Crédito desejado: ${dados.credito}</p>
+            <p>Valor ideal de Parcela: ${dados.parcela}</p>
+            <p>Profissão: ${dados.profissao}</p>
+            <p>Como nos conheceu: ${dados.origem}</p>
+          `,
+          "text": dados.mensagem,
+          "subject": "Nova Solicitação de Consórcio",
+          "from": {
+            "name": "Site LogosCor",
+            "email": "site@logoscor.com.br"
+          },
+          "to": [
+            {
+              "name": "Atendimento LogosCor",
+              "email": "contato@logoscor.com.br"
+            }
+          ]
+        }
       })
     });
 
-    if (!tokenResponse.ok) {
-      const tokenError = await tokenResponse.text();
-      log("Erro ao obter token do SendPulse", 'erro', tokenError);
-      throw new Error("Falha na autenticação com SendPulse");
+    if (!response.ok) {
+      throw new Error('Falha ao enviar email via SendPulse');
     }
 
-    const tokenData = await tokenResponse.json();
-    const token = tokenData.access_token;
-    log("Token obtido com sucesso", 'sucesso');
-
-    // Enviar o email com o token obtido
-    log("Enviando email via SendPulse API...", 'info');
-    const response = await fetch(SENDPULSE_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify(emailData)
-    });
-
-    const responseData = await response.json();
-    log("Resposta do SendPulse:", 'info', responseData);
-
-    if (response.ok) {
-      log("Email enviado com sucesso via SendPulse!", 'sucesso');
-      return true;
-    } else {
-      log("Falha no envio do email via SendPulse", 'erro', responseData);
-      throw new Error("Falha no envio do email via SendPulse");
-    }
+    const data = await response.json();
+    console.log('Email enviado com sucesso via SendPulse:', data);
+    return true;
   } catch (error) {
-    log("Erro ao enviar via SendPulse", 'erro', {
-      mensagem: error.message,
-      nome: error.name,
-      stack: error.stack
-    });
-    throw error;
+    console.error('Erro ao enviar email via SendPulse:', error);
+    return false;
+  }
+}
+
+// Função principal de envio que tenta SendPulse primeiro e depois EmailJS como fallback
+async function enviarEmail(mensagem) {
+  const dadosForm = {
+    nome: document.getElementById('nome').value,
+    email: document.getElementById('email').value,
+    telefone: document.getElementById('telefone').value,
+    idade: document.getElementById('idade').value,
+    cidade: document.getElementById('cidade').value,
+    estado: document.getElementById('estado').value,
+    objetivo: document.getElementById('objetivo').value,
+    credito: document.getElementById('creditoValor').textContent,
+    parcela: document.getElementById('parcelaValor').textContent,
+    profissao: document.getElementById('profissao').value,
+    origem: document.getElementById('origem').value,
+    mensagem: mensagem
+  };
+
+  try {
+    // Tenta enviar via SendPulse primeiro
+    const sendPulseSuccess = await enviarEmailSendPulse(dadosForm);
+    
+    if (!sendPulseSuccess) {
+      // Se falhar, tenta via EmailJS como fallback
+      const templateParams = {
+        to_name: "LogosCor",
+        from_name: dadosForm.nome,
+        reply_to: dadosForm.email,
+        message: mensagem
+      };
+
+      await emailjs.send('service_e5q4p1c', 'template_p4qs2s9', templateParams);
+    }
+
+    // Se chegou aqui, um dos métodos funcionou
+    console.log('Email enviado com sucesso!');
+    
+    // Mostrar confirmação e abrir WhatsApp
+    document.getElementById('formEtapa2').classList.add('hidden');
+    document.getElementById('confirmacaoEnvio').classList.remove('hidden');
+    
+    // Abrir WhatsApp
+    const whatsappNumber = '556230153001';
+    const whatsappMessage = encodeURIComponent(mensagem);
+    window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`, '_blank');
+
+  } catch (error) {
+    console.error('Erro ao enviar email:', error);
+    // Mesmo com erro, mostrar confirmação e abrir WhatsApp
+    document.getElementById('formEtapa2').classList.add('hidden');
+    document.getElementById('confirmacaoEnvio').classList.remove('hidden');
+    
+    // Abrir WhatsApp mesmo com erro
+    const whatsappNumber = '556230153001';
+    const whatsappMessage = encodeURIComponent(mensagem);
+    window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`, '_blank');
   }
 }
 
@@ -736,42 +759,6 @@ async function enviarEmailViaEmailJS(dadosPessoais, dadosSimulacao, dadosPessoai
     });
     throw error; // Propagar o erro para que a promise seja rejeitada
   }
-}
-
-function enviarEmail(mensagem) {
-  // Inicializar o EmailJS
-  emailjs.init("3V_t4CeqYZ1q-BVVJ");
-
-  const templateParams = {
-    to_name: "LogosCor",
-    from_name: document.getElementById('nome').value,
-    reply_to: document.getElementById('email').value,
-    message: mensagem
-  };
-
-  emailjs.send('service_e5q4p1c', 'template_p4qs2s9', templateParams)
-    .then(function(response) {
-      console.log('Email enviado com sucesso!', response.status, response.text);
-      // Mostrar confirmação
-      document.getElementById('formEtapa2').classList.add('hidden');
-      document.getElementById('confirmacaoEnvio').classList.remove('hidden');
-      
-      // Abrir WhatsApp
-      const whatsappNumber = '556230153001';
-      const whatsappMessage = encodeURIComponent(mensagem);
-      window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`, '_blank');
-    })
-    .catch(function(error) {
-      console.error('Falha no envio do email:', error);
-      // Mesmo com erro no email, mostrar confirmação e abrir WhatsApp
-      document.getElementById('formEtapa2').classList.add('hidden');
-      document.getElementById('confirmacaoEnvio').classList.remove('hidden');
-      
-      // Abrir WhatsApp mesmo com erro no email
-      const whatsappNumber = '556230153001';
-      const whatsappMessage = encodeURIComponent(mensagem);
-      window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`, '_blank');
-    });
 }
 
 // Função para mostrar erro
