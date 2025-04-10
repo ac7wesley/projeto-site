@@ -4,7 +4,7 @@ const EMAIL_RECIPIENT = 'logos@logoscor.com.br';
 // Configurações do SendPulse SMTP
 const SENDPULSE_SMTP = {
   host: 'smtp-pulse.com',
-  port: 465,
+  port: 2525,
   secure: true,
   auth: {
     user: 'ac7wesley@gmail.com',
