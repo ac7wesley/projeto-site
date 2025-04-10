@@ -3,13 +3,8 @@ const WHATSAPP_NUMBER = '556230153001';
 const EMAIL_RECIPIENT = 'logos@logoscor.com.br';
 // Configurações do SendPulse SMTP
 const SENDPULSE_SMTP = {
-  host: 'smtp-pulse.com',
-  port: 465,
-  secure: true,
-  auth: {
-    user: 'ac7wesley@gmail.com',
-    pass: 'AY4fncBqNf'
-  }
+  user: 'ac7wesley@gmail.com',
+  pass: 'AY4fncBqNf'
 };
 // Manter EmailJS como fallback
 const EMAIL_SERVICE_ID = "service_e5q4p1c";
@@ -249,7 +244,7 @@ Profissão: ${profissao}
 Como nos conheceu: ${origem === 'Outro' ? outroOrigem : origem}`;
 
     // Enviar email
-    enviarEmail(mensagem);
+    enviarEmailAutomatico({ nome, email, telefone, idade, cidade, estado }, { objetivo, credito, parcela, profissao, origem, outroOrigem });
 
     // Mostrar confirmação
     document.getElementById('formEtapa2').classList.add('hidden');
@@ -500,83 +495,6 @@ function enviarWhatsApp(dadosPessoais, dadosSimulacao) {
   }
 }
 
-// Função para obter token do SendPulse
-async function getSendPulseToken() {
-  try {
-    const response = await fetch('https://api.sendpulse.com/oauth/access_token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        grant_type: 'client_credentials',
-        client_id: SENDPULSE_SMTP.auth.user,
-        client_secret: SENDPULSE_SMTP.auth.pass
-      })
-    });
-    
-    const data = await response.json();
-    return data.access_token;
-  } catch (error) {
-    console.error('Erro ao obter token SendPulse:', error);
-    return null;
-  }
-}
-
-// Função para enviar email via SendPulse SMTP
-async function enviarEmailViaSendPulse(dadosPessoais, dadosSimulacao, dadosPessoaisTexto, detalhesSimulacaoTexto) {
-  try {
-    log("Iniciando envio via SendPulse SMTP...", 'info');
-
-    const emailData = {
-      from: {
-        name: dadosPessoais.nome,
-        email: 'ac7wesley@gmail.com' // Email autorizado no SendPulse
-      },
-      to: [{
-        name: "LogosCor",
-        email: EMAIL_RECIPIENT
-      }],
-      subject: "Nova Simulação de Consórcio - LogosCor",
-      html: `
-        <h2>Nova Simulação de Consórcio</h2>
-        <h3>Dados Pessoais:</h3>
-        ${dadosPessoaisTexto}
-        <h3>Detalhes da Simulação:</h3>
-        ${detalhesSimulacaoTexto}
-      `,
-      text: `
-        Nova Simulação de Consórcio\n\n
-        Dados Pessoais:\n
-        ${dadosPessoaisTexto}\n\n
-        Detalhes da Simulação:\n
-        ${detalhesSimulacaoTexto}
-      `
-    };
-
-    // Enviar usando SMTP
-    const response = await fetch('https://api.smtp-pulse.com/v1/smtp/emails', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic ' + btoa(`${SENDPULSE_SMTP.auth.user}:${SENDPULSE_SMTP.auth.pass}`)
-      },
-      body: JSON.stringify(emailData)
-    });
-
-    if (!response.ok) {
-      throw new Error('Falha no envio via SMTP');
-    }
-
-    log("Email enviado com sucesso via SendPulse SMTP", 'sucesso');
-    return true;
-  } catch (error) {
-    log("Erro ao enviar email via SendPulse SMTP", 'erro', error);
-    // Tentar enviar via EmailJS como fallback
-    return await enviarEmailViaEmailJS(dadosPessoais, dadosSimulacao, dadosPessoaisTexto, detalhesSimulacaoTexto);
-  }
-}
-
 function enviarEmailAutomatico(dadosPessoais, dadosSimulacao) {
   // Mostrar indicador de carregamento
   const botaoEnviar = document.querySelector('button[onclick="validarEtapa2()"]');
@@ -602,27 +520,15 @@ Valor ideal de Parcela: ${Number(dadosSimulacao.parcela).toLocaleString('pt-BR',
 Profissão: ${dadosSimulacao.profissao}
 Como nos conheceu: ${dadosSimulacao.origem}`;
 
-    // Enviar via EmailJS
-    const templateParams = {
-      to_name: "LogosCor",
-      from_name: dadosPessoais.nome,
-      reply_to: dadosPessoais.email,
-      subject: `Nova Simulação de Consórcio - ${dadosPessoais.nome}`,
-      message: `NOVA SIMULAÇÃO DE CONSÓRCIO\n\nDADOS PESSOAIS:\n${dadosPessoaisTexto}\n\nDETALHES DA SIMULAÇÃO:\n${detalhesSimulacaoTexto}`
-    };
-
-    // Inicializar EmailJS
-    emailjs.init(EMAIL_USER_ID);
-
-    // Enviar email
-    emailjs.send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, templateParams)
-      .then(function(response) {
-        log("Email enviado com sucesso!", 'sucesso', response);
+    // Enviar email via SendPulse
+    enviarEmailViaSendPulse(dadosPessoais, dadosSimulacao, dadosPessoaisTexto, detalhesSimulacaoTexto)
+      .then(() => {
+        log("Email enviado com sucesso!", 'sucesso');
       })
-      .catch(function(error) {
+      .catch((error) => {
         log("Erro ao enviar email", 'erro', error);
       })
-      .finally(function() {
+      .finally(() => {
         // Sempre mostrar confirmação e abrir WhatsApp
         setTimeout(() => {
           // Ocultar formulário e mostrar confirmação
@@ -658,96 +564,57 @@ Como nos conheceu: ${dadosSimulacao.origem}`;
   }
 }
 
-// Função para enviar email via EmailJS (solução gratuita)
-async function enviarEmailViaEmailJS(dadosPessoais, dadosSimulacao, dadosPessoaisTexto, detalhesSimulacaoTexto) {
+async function enviarEmailViaSendPulse(dadosPessoais, dadosSimulacao, dadosPessoaisTexto, detalhesSimulacaoTexto) {
   try {
-    log("Preparando envio via EmailJS...", 'info');
-    
-    // Verificar se EmailJS está carregado
-    if (typeof emailjs === 'undefined') {
-      log("EmailJS não está carregado", 'erro');
-      throw new Error("EmailJS não está carregado");
-    }
+    log("Iniciando envio via SendPulse SMTP...", 'info');
 
-    // Preparar os parâmetros para o template
-    const templateParams = {
-      to_name: "LogosCor",
-      from_name: dadosPessoais.nome || "Cliente",
-      reply_to: dadosPessoais.email || "",
-      subject: `Nova Simulação de Consórcio - ${dadosPessoais.nome}`,
-      dados_pessoais: dadosPessoaisTexto,
-      dados_simulacao: detalhesSimulacaoTexto,
-      message: `NOVA SIMULAÇÃO DE CONSÓRCIO\n\nDADOS PESSOAIS:\n${dadosPessoaisTexto}\n\nDETALHES DA SIMULAÇÃO:\n${detalhesSimulacaoTexto}`
+    const emailData = {
+      from: {
+        name: dadosPessoais.nome,
+        email: SENDPULSE_SMTP.user
+      },
+      to: [{
+        name: "LogosCor",
+        email: EMAIL_RECIPIENT
+      }],
+      subject: "Nova Simulação de Consórcio - LogosCor",
+      html: `
+        <h2>Nova Simulação de Consórcio</h2>
+        <h3>Dados Pessoais:</h3>
+        ${dadosPessoaisTexto.replace(/\n/g, '<br>')}
+        <h3>Detalhes da Simulação:</h3>
+        ${detalhesSimulacaoTexto.replace(/\n/g, '<br>')}
+      `,
+      text: `
+        Nova Simulação de Consórcio\n\n
+        Dados Pessoais:\n
+        ${dadosPessoaisTexto}\n\n
+        Detalhes da Simulação:\n
+        ${detalhesSimulacaoTexto}
+      `
     };
 
-    log("Parâmetros do template preparados", 'info', {
-      service: EMAIL_SERVICE_ID,
-      template: EMAIL_TEMPLATE_ID,
-      destinatario: templateParams.to_name,
-      remetente: templateParams.from_name
+    // Enviar usando SMTP
+    const response = await fetch('https://api.smtp-pulse.com/v1/smtp/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + btoa(`${SENDPULSE_SMTP.user}:${SENDPULSE_SMTP.pass}`)
+      },
+      body: JSON.stringify(emailData)
     });
 
-    // Enviar o email usando EmailJS
-    const resultado = await emailjs.send(
-      EMAIL_SERVICE_ID,
-      EMAIL_TEMPLATE_ID,
-      templateParams,
-      EMAIL_USER_ID
-    );
-
-    log("Resposta do EmailJS:", 'info', resultado);
-
-    if (resultado.status === 200) {
-      log("Email enviado com sucesso via EmailJS!", 'sucesso');
-      return true;
-    } else {
-      log("Resposta inesperada do EmailJS", 'erro', resultado);
-      throw new Error(`EmailJS retornou status ${resultado.status}`);
+    if (!response.ok) {
+      const errorData = await response.text();
+      throw new Error(`Falha no envio via SMTP: ${errorData}`);
     }
+
+    log("Email enviado com sucesso via SendPulse SMTP", 'sucesso');
+    return true;
   } catch (error) {
-    log("Erro ao enviar via EmailJS", 'erro', {
-      mensagem: error.message,
-      nome: error.name,
-      stack: error.stack
-    });
-    throw error; // Propagar o erro para que a promise seja rejeitada
+    log("Erro ao enviar email via SendPulse SMTP", 'erro', error);
+    throw error;
   }
-}
-
-function enviarEmail(mensagem) {
-  // Inicializar o EmailJS
-  emailjs.init("3V_t4CeqYZ1q-BVVJ");
-
-  const templateParams = {
-    to_name: "LogosCor",
-    from_name: document.getElementById('nome').value,
-    reply_to: document.getElementById('email').value,
-    message: mensagem
-  };
-
-  emailjs.send('service_e5q4p1c', 'template_p4qs2s9', templateParams)
-    .then(function(response) {
-      console.log('Email enviado com sucesso!', response.status, response.text);
-      // Mostrar confirmação
-      document.getElementById('formEtapa2').classList.add('hidden');
-      document.getElementById('confirmacaoEnvio').classList.remove('hidden');
-      
-      // Abrir WhatsApp
-      const whatsappNumber = '556230153001';
-      const whatsappMessage = encodeURIComponent(mensagem);
-      window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`, '_blank');
-    })
-    .catch(function(error) {
-      console.error('Falha no envio do email:', error);
-      // Mesmo com erro no email, mostrar confirmação e abrir WhatsApp
-      document.getElementById('formEtapa2').classList.add('hidden');
-      document.getElementById('confirmacaoEnvio').classList.remove('hidden');
-      
-      // Abrir WhatsApp mesmo com erro no email
-      const whatsappNumber = '556230153001';
-      const whatsappMessage = encodeURIComponent(mensagem);
-      window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`, '_blank');
-    });
 }
 
 // Função para mostrar erro
