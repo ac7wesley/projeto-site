@@ -487,7 +487,7 @@ function enviarWhatsApp(dadosPessoais, dadosSimulacao) {
         // Não há como verificar diretamente se o segundo método funcionou
         // Exibir uma mensagem de orientação caso o usuário precise abrir manualmente
         alert("Se o WhatsApp não abriu automaticamente, copie este número e envie uma mensagem: " + WHATSAPP_NUMBER);
-      }, 1500);
+      }, 300);
     } else {
       log("WhatsApp aberto com sucesso", 'sucesso');
     }
@@ -602,7 +602,7 @@ Como nos conheceu: ${dadosSimulacao.origem}`;
           // Abrir WhatsApp
           log("Abrindo WhatsApp...", 'info');
           enviarWhatsApp(dadosPessoais, dadosSimulacao);
-        }, 500);
+        }, 100);
       });
     
   } catch (e) {
