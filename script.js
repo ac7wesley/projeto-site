@@ -1,10 +1,12 @@
 // Constantes
 const WHATSAPP_NUMBER = '556230153001';
 const EMAIL_RECIPIENT = 'logos@logoscor.com.br';
+const CLOUDFLARE_WORKER_URL = 'https://seu-worker.workers.dev'; // Substitua pela URL do seu Worker
+const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzcqmUPHrhliUaHF1MjH5DpURJPgvIgzvW7z2T1KrIpr_axmg613cwldCEgwjf-uGxsCg/exec'; // Substitua pela URL do seu Web App do Google Apps Script
 // Configurações do SendPulse SMTP
 const SENDPULSE_SMTP = {
-  user: 'ac7wesley@gmail.com',
-  pass: 'AY4fncBqNf'
+  user: '21b3d17673984abf86ad76aaba6cc371',
+  pass: '528c8261e0755be29840f9bc06070fa6'
 };
 // Manter EmailJS como fallback
 const EMAIL_SERVICE_ID = "service_e5q4p1c";
@@ -495,7 +497,34 @@ function enviarWhatsApp(dadosPessoais, dadosSimulacao) {
   }
 }
 
-function enviarEmailAutomatico(dadosPessoais, dadosSimulacao) {
+async function enviarDadosParaPlanilha(dados) {
+  try {
+    log("Preparando dados para enviar ao Google Sheets...", 'info');
+    
+    // Criar FormData
+    const formData = new FormData();
+    
+    // Adicionar os dados ao FormData
+    Object.keys(dados).forEach(key => {
+      formData.append(key, dados[key]);
+    });
+
+    // Enviar dados diretamente via fetch
+    const response = await fetch(GOOGLE_SHEETS_URL, {
+      method: 'POST',
+      body: formData,
+      mode: 'no-cors' // Importante para evitar erros de CORS
+    });
+
+    log("Resposta do Google Sheets recebida", 'sucesso');
+    return { result: 'success' };
+  } catch (error) {
+    log("Erro ao enviar dados para planilha", 'erro', error);
+    throw error;
+  }
+}
+
+async function enviarEmailAutomatico(dadosPessoais, dadosSimulacao) {
   // Mostrar indicador de carregamento
   const botaoEnviar = document.querySelector('button[onclick="validarEtapa2()"]');
   const textoOriginal = botaoEnviar.innerHTML;
@@ -503,7 +532,7 @@ function enviarEmailAutomatico(dadosPessoais, dadosSimulacao) {
   botaoEnviar.disabled = true;
 
   try {
-    log("Iniciando envio de email...", 'info');
+    log("Iniciando envio de dados...", 'info');
     
     // Preparar dados para envio
     const dadosPessoaisTexto = `
@@ -519,6 +548,34 @@ Valor do Crédito: ${Number(dadosSimulacao.credito).toLocaleString('pt-BR', { st
 Valor ideal de Parcela: ${Number(dadosSimulacao.parcela).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
 Profissão: ${dadosSimulacao.profissao}
 Como nos conheceu: ${dadosSimulacao.origem}`;
+
+    // Enviar dados para o Google Sheets
+    try {
+      const dadosParaEnviar = {
+        nome: dadosPessoais.nome,
+        email: dadosPessoais.email,
+        telefone: dadosPessoais.telefone,
+        idade: dadosPessoais.idade,
+        cidade: dadosPessoais.cidade,
+        estado: dadosPessoais.estado,
+        objetivo: dadosSimulacao.objetivo,
+        credito: dadosSimulacao.credito,
+        parcela: dadosSimulacao.parcela,
+        profissao: dadosSimulacao.profissao,
+        origem: dadosSimulacao.origem
+      };
+
+      log("Dados a serem enviados:", 'info', dadosParaEnviar);
+      
+      const resultado = await enviarDadosParaPlanilha(dadosParaEnviar);
+      log("Dados salvos na planilha com sucesso!", 'sucesso', resultado);
+    } catch (error) {
+      log("Erro ao salvar na planilha", 'erro', {
+        message: error.message,
+        stack: error.stack
+      });
+      // Continuar mesmo com erro na planilha
+    }
 
     // Enviar email via SendPulse
     enviarEmailViaSendPulse(dadosPessoais, dadosSimulacao, dadosPessoaisTexto, detalhesSimulacaoTexto)
@@ -549,7 +606,10 @@ Como nos conheceu: ${dadosSimulacao.origem}`;
       });
     
   } catch (e) {
-    log("Erro ao processar formulário", 'erro', e);
+    log("Erro ao processar formulário", 'erro', {
+      message: e.message,
+      stack: e.stack
+    });
     
     // Mesmo com erro, mostrar confirmação e abrir WhatsApp
     document.getElementById('formEtapa2').classList.add('hidden');
@@ -566,26 +626,13 @@ Como nos conheceu: ${dadosSimulacao.origem}`;
 
 async function enviarEmailViaSendPulse(dadosPessoais, dadosSimulacao, dadosPessoaisTexto, detalhesSimulacaoTexto) {
   try {
-    log("Iniciando envio via SendPulse SMTP...", 'info');
+    log("Iniciando envio via Cloudflare Worker...", 'info');
 
     const emailData = {
-      from: {
-        name: dadosPessoais.nome,
-        email: SENDPULSE_SMTP.user
-      },
-      to: [{
-        name: "LogosCor",
-        email: EMAIL_RECIPIENT
-      }],
+      to: EMAIL_RECIPIENT,
+      name: "LogosCor",
       subject: "Nova Simulação de Consórcio - LogosCor",
-      html: `
-        <h2>Nova Simulação de Consórcio</h2>
-        <h3>Dados Pessoais:</h3>
-        ${dadosPessoaisTexto.replace(/\n/g, '<br>')}
-        <h3>Detalhes da Simulação:</h3>
-        ${detalhesSimulacaoTexto.replace(/\n/g, '<br>')}
-      `,
-      text: `
+      message: `
         Nova Simulação de Consórcio\n\n
         Dados Pessoais:\n
         ${dadosPessoaisTexto}\n\n
@@ -594,25 +641,25 @@ async function enviarEmailViaSendPulse(dadosPessoais, dadosSimulacao, dadosPesso
       `
     };
 
-    // Enviar usando SMTP
-    const response = await fetch('https://api.sendpulse.com/smtp/emails', {
+    // Enviar usando Cloudflare Worker
+    const response = await fetch(CLOUDFLARE_WORKER_URL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic ' + btoa(`${SENDPULSE_SMTP.user}:${SENDPULSE_SMTP.pass}`)
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(emailData)
     });
 
     if (!response.ok) {
       const errorData = await response.text();
-      throw new Error(`Falha no envio via SMTP: ${errorData}`);
+      throw new Error(`Falha no envio: ${errorData}`);
     }
 
-    log("Email enviado com sucesso via SendPulse SMTP", 'sucesso');
+    const result = await response.json();
+    log("Email enviado com sucesso via Cloudflare Worker", 'sucesso', result);
     return true;
   } catch (error) {
-    log("Erro ao enviar email via SendPulse SMTP", 'erro', error);
+    log("Erro ao enviar email via Cloudflare Worker", 'erro', error);
     throw error;
   }
 }
