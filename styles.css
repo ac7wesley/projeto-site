@@ -920,3 +920,29 @@ body {
     transform: translateX(0);
   }
 }
+
+/* Animação do botão Avançar */
+@keyframes pulseButton {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.2);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.2);
+  }
+}
+
+.btn-avancar {
+  animation: pulseButton 2s ease-in-out infinite;
+}
+
+.btn-avancar:hover {
+  animation: none;
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(37, 99, 235, 0.4);
+}
