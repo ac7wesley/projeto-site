@@ -14,10 +14,10 @@ body {
 
 /* Container */
 .container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
+  max-width: 1200px !important;
+  padding: 2rem 1.5rem !important;
+  margin: 0 auto !important;
+  width: 100% !important;
 }
 
 /* Utilitários */
@@ -37,13 +37,16 @@ body {
 
 /* Grid System */
 .grid {
-  display: grid;
-  gap: 1.5rem;
+  display: grid !important;
+  gap: 2rem !important;
+  align-items: stretch !important;
+  justify-content: center !important;
 }
 
 @media (min-width: 768px) {
   .grid-2 {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 3rem !important;
   }
   
   .grid-3 {
@@ -51,7 +54,14 @@ body {
   }
   
   .grid-4 {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 2rem !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-4 {
+    grid-template-columns: repeat(4, 1fr) !important;
   }
 }
 
@@ -97,9 +107,9 @@ body {
 
 /* Seção Header */
 .section-header {
-  text-align: center;
-  margin-bottom: 0rem;
-  margin-top: 0rem;
+  margin-bottom: 1.5rem !important;
+  text-align: center !important;
+  width: 100% !important;
   position: relative;
 }
 
@@ -117,13 +127,13 @@ body {
   padding: 2rem;
   text-align: center;
   transition: all 0.3s ease;
-  height: 100%;
+  height: 100% !important;
   min-height: 250px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
   position: relative;
   overflow: hidden;
 }
@@ -150,6 +160,8 @@ body {
   margin-bottom: 1.5rem;
   position: relative;
   z-index: 2;
+  width: 100% !important;
+  text-align: center !important;
 }
 
 .card-title {
@@ -159,6 +171,8 @@ body {
   margin-bottom: 1rem;
   position: relative;
   z-index: 2;
+  width: 100% !important;
+  text-align: center !important;
 }
 
 .card-text {
@@ -166,6 +180,8 @@ body {
   line-height: 1.5;
   position: relative;
   z-index: 2;
+  width: 100% !important;
+  text-align: center !important;
 }
 
 /* Responsividade dos Cards */
@@ -275,7 +291,10 @@ body {
 
 /* Seções */
 .section {
-  padding: 2rem 0;
+  padding: 1.5rem 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  width: 100% !important;
 }
 
 .section-gradient {
@@ -314,9 +333,18 @@ body {
 
 .img-container {
   position: relative;
-  height: 300px;
-  overflow: hidden;
-  border-radius: 8px;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 300px !important;
+  overflow: hidden !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
+}
+
+.img-container img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
 }
 
 @media (min-width: 768px) {
@@ -354,9 +382,9 @@ body {
 }
 
 .footer-logo {
-  height: 390px;
-  margin-top: -106px;
-  margin-bottom: -146px;
+  height: 250px;
+  margin-top: -50px;
+  margin-bottom: -50px;
 }
 
 .footer-description {
@@ -513,12 +541,13 @@ body {
 
 /* Formulário Card */
 .form-card {
-  background: white;
-  border-radius: 8px;
-  padding: 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
-  margin: 0 auto;
+  max-width: 600px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  padding: 2rem !important;
+  background: white !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* Logo */
@@ -527,10 +556,10 @@ body {
 }
 
 .logo {
-  height: 240px;
-  margin-left: 8%;
-  margin-top: -66px;
-  margin-bottom: -130px;
+  height: 250px;
+  margin-left: 2%;
+  margin-top: -96px;
+  margin-bottom: -330px;
 }
 
 @media (max-width: 768px) {
@@ -538,7 +567,7 @@ body {
     height: 240px;
     margin-left: 10%;
     margin-top: -60px;
-    margin-bottom: -120px;
+    margin-bottom: -170px;
   }
 }
 
@@ -945,4 +974,50 @@ body {
   animation: none;
   transform: scale(1.05);
   box-shadow: 0 0 15px rgba(37, 99, 235, 0.4);
+}
+
+/* Adicione o novo seletor section + section */
+section + section {
+  margin-top: -1.5rem !important;
+}
+
+.py-2 {
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+}
+
+/* Adicione esta media query para dispositivos móveis */
+@media (max-width: 768px) {
+  .footer-logo {
+    height: 240px;
+    margin-top: -40px;
+    margin-bottom: -40px;
+  }
+  
+  /* Reduz o padding do footer para dispositivos móveis */
+  .footer {
+    padding: 2rem 0;
+  }
+}
+
+/* Para dispositivos ainda menores */
+@media (max-width: 480px) {
+  .footer-logo {
+    height: 290px;
+    margin-top: -130px;
+    margin-bottom: -130px;
+  }
+}
+
+/* Reduzir espaço entre as seções específicas */
+#como-funciona {
+  margin-top: -1rem !important;
+  padding-top: 0 !important;
+}
+
+/* Adicione este seletor se precisar ajustar apenas em dispositivos móveis */
+@media (max-width: 768px) {
+  #como-funciona {
+    margin-top: -1.5rem !important;
+  }
 }
