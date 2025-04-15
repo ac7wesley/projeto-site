@@ -445,52 +445,28 @@ function enviarWhatsApp(dadosPessoais, dadosSimulacao) {
   
   try {
     // Preparar a mensagem com os dados do formulário
-  const mensagem = `Olá, tenho interesse em um consórcio!%0A%0A` +
-    `*Dados Pessoais*%0A` +
-    `Nome: ${dadosPessoais.nome}%0A` +
-    `Email: ${dadosPessoais.email}%0A` +
-    `Telefone: ${dadosPessoais.telefone}%0A` +
-    `Idade: ${dadosPessoais.idade}%0A` +
-    `Cidade/UF: ${dadosPessoais.cidade}-${dadosPessoais.estado}%0A%0A` +
-    `*Detalhes do Consórcio*%0A` +
-    `Objetivo: ${dadosSimulacao.objetivo}%0A` +
-    `Crédito desejado: ${Number(dadosSimulacao.credito).toLocaleString('pt-BR')}%0A` +
-    `Valor ideal de Parcela: ${Number(dadosSimulacao.parcela).toLocaleString('pt-BR')}%0A` +
-    `Profissão: ${dadosSimulacao.profissao}%0A` +
-    `Como nos conheceu: ${dadosSimulacao.origem}`;
+    const mensagem = `Olá, tenho interesse em um consórcio!%0A%0A` +
+      `*Dados Pessoais*%0A` +
+      `Nome: ${dadosPessoais.nome}%0A` +
+      `Email: ${dadosPessoais.email}%0A` +
+      `Telefone: ${dadosPessoais.telefone}%0A` +
+      `Idade: ${dadosPessoais.idade}%0A` +
+      `Cidade/UF: ${dadosPessoais.cidade}-${dadosPessoais.estado}%0A%0A` +
+      `*Detalhes do Consórcio*%0A` +
+      `Objetivo: ${dadosSimulacao.objetivo}%0A` +
+      `Crédito desejado: ${Number(dadosSimulacao.credito).toLocaleString('pt-BR')}%0A` +
+      `Valor ideal de Parcela: ${Number(dadosSimulacao.parcela).toLocaleString('pt-BR')}%0A` +
+      `Profissão: ${dadosSimulacao.profissao}%0A` +
+      `Como nos conheceu: ${dadosSimulacao.origem}`;
 
     // Construir a URL do WhatsApp com a mensagem
     const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${mensagem}`;
     log("URL do WhatsApp gerada", 'info');
     
-    // Tentar abrir o WhatsApp em uma nova janela
-    log("Tentando abrir WhatsApp...", 'info');
+    // Abrir o WhatsApp na mesma janela
+    log("Tentando abrir WhatsApp na mesma janela...", 'info');
+    window.location.href = whatsappUrl;
     
-    // Primeiro método: direct link in new tab
-    const whatsappWindow = window.open(whatsappUrl, '_blank');
-    
-    // Verificar se a janela foi aberta corretamente
-    if (!whatsappWindow || whatsappWindow.closed || typeof whatsappWindow.closed === 'undefined') {
-      log("Método 1 falhou: Possível bloqueio de pop-up", 'aviso');
-      
-      // Segundo método: Criar um link temporário e clicar nele
-      log("Tentando método alternativo...", 'info');
-      const tempLink = document.createElement('a');
-      tempLink.href = whatsappUrl;
-      tempLink.target = '_blank';
-      tempLink.rel = 'noopener noreferrer';
-      tempLink.click();
-      
-      // Mostrar dica em caso de problemas
-      setTimeout(() => {
-        log("Verificando se o WhatsApp foi aberto...", 'info');
-        // Não há como verificar diretamente se o segundo método funcionou
-        // Exibir uma mensagem de orientação caso o usuário precise abrir manualmente
-        alert("Se o WhatsApp não abriu automaticamente, copie este número e envie uma mensagem: " + WHATSAPP_NUMBER);
-      }, 300);
-    } else {
-      log("WhatsApp aberto com sucesso", 'sucesso');
-    }
   } catch (e) {
     log("Erro ao tentar abrir WhatsApp", 'erro', e);
     alert("Não foi possível abrir o WhatsApp automaticamente. Por favor, entre em contato pelo número: " + WHATSAPP_NUMBER);
@@ -602,7 +578,7 @@ Como nos conheceu: ${dadosSimulacao.origem}`;
           // Abrir WhatsApp
           log("Abrindo WhatsApp...", 'info');
           enviarWhatsApp(dadosPessoais, dadosSimulacao);
-        }, 100);
+        }, 10);
       });
     
   } catch (e) {
