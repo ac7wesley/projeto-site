@@ -6,19 +6,22 @@
   <meta name="description" content="Página não encontrada - LogosCor Consórcios e Seguros">
   <title>Página não encontrada | LogosCor</title>
   
+  <!-- Base URL para resolver caminhos relativos corretamente -->
+  <base href="/">
+  
   <!-- Favicon -->
-  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="manifest" href="site.webmanifest">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="theme-color" content="#ffffff">
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="/styles.css">
   
   <style>
     .page-404 {
@@ -77,7 +80,7 @@
     .error-image {
       max-width: 100%;
       height: auto;
-      margin-bottom: -70px;
+      margin-bottom: 0;
       width: 300px;
     }
     
@@ -105,7 +108,7 @@
   <!-- Header -->
   <header class="container">
     <div class="logo-wrapper">
-      <img src="Logo.png" alt="LogosCor Consórcios" class="logo">
+      <img src="/Logo.png" alt="LogosCor Consórcios" class="logo">
     </div>
   </header>
 
@@ -113,7 +116,7 @@
   <div class="page-404 relative">
     <div class="bg-pattern"></div>
     
-    <img src="error-404.png" alt="Página não encontrada" class="error-image">
+    <img src="/error-404.png" alt="Página não encontrada" class="error-image">
     
     <h1 class="error-code">404</h1>
     
@@ -124,7 +127,7 @@
       Mas não se preocupe, temos várias outras oportunidades para você conquistar seus objetivos com segurança.
     </p>
     
-    <a href="index.html" class="home-btn">
+    <a href="/" class="home-btn">
       <i class="fas fa-home mr-2"></i> Voltar para a página inicial
     </a>
     
@@ -135,12 +138,12 @@
   </div>
 
   <!-- Footer -->
-  <footer class="bg-gray-800 text-white py-2">
-    <div class="container mx-auto px-2">
+  <footer class="bg-gray-800 text-white py-6">
+    <div class="container mx-auto px-4">
       <div class="text-center">
-        <img src="logo-white.png" alt="Logos Consorcios e Seguros" class="footer-logo mx-auto" style="height: 250px;">
-        <p class="text-gray-400 mt-2">© 2025 Logos Consórcios e Seguros. Todos os direitos reservados.</p>
-        <div class="flex justify-center space-x-4 mt-2">
+        <img src="/logo-white.png" alt="Logos Consorcios e Seguros" class="footer-logo mx-auto" style="height: 150px;">
+        <p class="text-gray-400 mt-4">© 2025 Logos Consórcios e Seguros. Todos os direitos reservados.</p>
+        <div class="flex justify-center space-x-4 mt-4">
           <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook"></i></a>
           <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
           <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin"></i></a>
