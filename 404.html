@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Página não encontrada - LogosCor Consórcios e Seguros">
+  <title>Página não encontrada | LogosCor</title>
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="theme-color" content="#ffffff">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles.css">
+  
+  <style>
+    .page-404 {
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      text-align: center;
+      padding: 1rem;
+      padding-top: 0;
+      margin-top: -30px;
+    }
+    
+    .error-code {
+      font-size: 8rem;
+      font-weight: 800;
+      color: #2563eb;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+      margin-top: -1rem;
+      opacity: 0.8;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .error-text {
+      font-size: 1.5rem;
+      color: #1f2937;
+      margin-bottom: 1.5rem;
+    }
+    
+    .error-description {
+      max-width: 600px;
+      margin: 0 auto 1.5rem;
+      color: #4b5563;
+    }
+    
+    .home-btn {
+      background-color: #2563eb;
+      color: white;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      animation: pulseButton 2s ease-in-out infinite;
+    }
+    
+    .home-btn:hover {
+      animation: none;
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(37, 99, 235, 0.4);
+    }
+    
+    .error-image {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: -70px;
+      width: 300px;
+    }
+    
+    .bg-pattern {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0.05;
+      z-index: -1;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232563eb' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    
+    .logo-wrapper {
+      padding-bottom: 0;
+    }
+    
+    footer {
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <!-- Header -->
+  <header class="container">
+    <div class="logo-wrapper">
+      <img src="Logo.png" alt="LogosCor Consórcios" class="logo">
+    </div>
+  </header>
+
+  <!-- 404 Content -->
+  <div class="page-404 relative">
+    <div class="bg-pattern"></div>
+    
+    <img src="error-404.png" alt="Página não encontrada" class="error-image">
+    
+    <h1 class="error-code">404</h1>
+    
+    <h2 class="error-text">Página não encontrada</h2>
+    
+    <p class="error-description">
+      Ops! Parece que o caminho para realizar este sonho não existe. 
+      Mas não se preocupe, temos várias outras oportunidades para você conquistar seus objetivos com segurança.
+    </p>
+    
+    <a href="index.html" class="home-btn">
+      <i class="fas fa-home mr-2"></i> Voltar para a página inicial
+    </a>
+    
+    <p class="mt-6 text-gray-600">
+      <i class="fas fa-info-circle mr-1 text-blue-600"></i> 
+      Precisa de ajuda? <a href="https://wa.me/556230153001?text=Oi,%20preciso%20de%20ajuda%20no%20site" class="text-blue-600 hover:underline">Entre em contato conosco</a>
+    </p>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-2">
+    <div class="container mx-auto px-2">
+      <div class="text-center">
+        <img src="logo-white.png" alt="Logos Consorcios e Seguros" class="footer-logo mx-auto" style="height: 250px;">
+        <p class="text-gray-400 mt-2">© 2025 Logos Consórcios e Seguros. Todos os direitos reservados.</p>
+        <div class="flex justify-center space-x-4 mt-2">
+          <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook"></i></a>
+          <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin"></i></a>
+          <a href="https://wa.me/556230153001?text=OLá%20vindo%20direto%20no%20site,%20Preciso%20de%20um%20atendimento!" class="text-gray-400 hover:text-white"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
