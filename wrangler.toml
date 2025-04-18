@@ -1,0 +1,4 @@
+name = "email-site-logos"
+type = "javascript"
+main = "src/index.js"
+compatibility_date = "2025-04-18"
