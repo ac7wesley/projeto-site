@@ -1,11 +1,11 @@
 export default {
-  async fetch(request) {
-    // Obtém o corpo da solicitação como JSON
+  async fetch(request, env) { // Adicionar env como parâmetro
     const body = await request.json();
     
     // Obtém as credenciais do SendPulse das variáveis de ambiente
-    const clientId = process.env.CLIENT_ID;
-    const clientSecret = process.env.CLIENT_SECRET;
+    // Acessar variáveis do ambiente CORRETAMENTE
+    const clientId = env.CLIENT_ID;
+    const clientSecret = env.CLIENT_SECRET;
 
     try {
       // Faz uma solicitação POST para obter o token de acesso do SendPulse

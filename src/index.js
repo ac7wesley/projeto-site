@@ -4,8 +4,9 @@ const allowedOrigin = 'https://logoscor.com.br';
 // Defina os cabeçalhos CORS que serão adicionados a todas as respostas
 // (tanto preflight quanto as respostas reais)
 const corsHeaders = {
+  "Content-Type": "application/json",
   'Access-Control-Allow-Origin': allowedOrigin,
-  'Access-Control-Allow-Methods': 'POST, GET, OPTIONS', // Adicione outros métodos se necessário (PUT, DELETE, etc.)
+  'Access-Control-Allow-Methods': 'POST, OPTIONS', // Adicione outros métodos se necessário (PUT, DELETE, etc.)
   'Access-Control-Allow-Headers': 'Content-Type', // Adicione outros cabeçalhos que seu frontend envia (ex: 'Authorization')
 };
 

@@ -663,33 +663,5 @@ function ocultarErro(elementId) {
     }
   }
 }
-          //--------------------------------------------------------------------------------------------
-
-
-          fetch("https://email-site-logos.ac7wesley.workers.dev", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              to: EMAIL_RECIPIENT,
-              name: "LogosCor",
-              subject: "Nova Simulação de Consórcio - LogosCor",
-              message: `
-                Nova Simulação de Consórcio\n\n
-                Dados Pessoais:\n
-                ${dadosPessoaisTexto}\n\n
-                Detalhes da Simulação:\n
-                ${detalhesSimulacaoTexto}
-              `
-
-
-
-
-
-
-            })
-          })
-          
-          //--------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------
           
