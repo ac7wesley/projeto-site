@@ -574,24 +574,7 @@ Como nos conheceu: ${dadosSimulacao.origem}`;
           // Restaurar botão
           botaoEnviar.innerHTML = textoOriginal;
           botaoEnviar.disabled = false;
-          //--------------------------------------------------------------------------------------------
 
-
-          fetch("https://email-site-logos.ac7wesley.workers.dev", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              to: email,
-              name: nome,
-              subject: assunto,
-              message: mensagem
-            })
-          })
-          
-          //--------------------------------------------------------------------------------------------
-          
           // Abrir WhatsApp
           log("Abrindo WhatsApp...", 'info');
           enviarWhatsApp(dadosPessoais, dadosSimulacao);
@@ -680,3 +663,21 @@ function ocultarErro(elementId) {
     }
   }
 }
+          //--------------------------------------------------------------------------------------------
+
+
+          fetch("https://email-site-logos.ac7wesley.workers.dev", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              to: email,
+              name: nome,
+              subject: assunto,
+              message: mensagem
+            })
+          })
+          
+          //--------------------------------------------------------------------------------------------
+          
