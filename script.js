@@ -1,7 +1,7 @@
 // Constantes
 const WHATSAPP_NUMBER = '556230153001';
 const EMAIL_RECIPIENT = 'logos@logoscor.com.br';
-const CLOUDFLARE_WORKER_URL = 'https://seu-worker.workers.dev'; // Substitua pela URL do seu Worker
+const CLOUDFLARE_WORKER_URL = 'https://email-site-logos.ac7wesley.workers.dev'; // Substitua pela URL do seu Worker
 const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzcqmUPHrhliUaHF1MjH5DpURJPgvIgzvW7z2T1KrIpr_axmg613cwldCEgwjf-uGxsCg/exec'; // Substitua pela URL do seu Web App do Google Apps Script
 // Configurações do SendPulse SMTP
 const SENDPULSE_SMTP = {
@@ -574,6 +574,23 @@ Como nos conheceu: ${dadosSimulacao.origem}`;
           // Restaurar botão
           botaoEnviar.innerHTML = textoOriginal;
           botaoEnviar.disabled = false;
+          //--------------------------------------------------------------------------------------------
+
+
+          fetch("https://email-site-logos.ac7wesley.workers.dev", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              to: email,
+              name: nome,
+              subject: assunto,
+              message: mensagem
+            })
+          })
+          
+          //--------------------------------------------------------------------------------------------
           
           // Abrir WhatsApp
           log("Abrindo WhatsApp...", 'info');
