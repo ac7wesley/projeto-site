@@ -672,10 +672,22 @@ function ocultarErro(elementId) {
               "Content-Type": "application/json"
             },
             body: JSON.stringify({
-              to: email,
-              name: nome,
-              subject: assunto,
-              message: mensagem
+              to: EMAIL_RECIPIENT,
+              name: "LogosCor",
+              subject: "Nova Simulação de Consórcio - LogosCor",
+              message: `
+                Nova Simulação de Consórcio\n\n
+                Dados Pessoais:\n
+                ${dadosPessoaisTexto}\n\n
+                Detalhes da Simulação:\n
+                ${detalhesSimulacaoTexto}
+              `
+
+
+
+
+
+
             })
           })
           
