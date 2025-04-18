@@ -4,10 +4,10 @@ const EMAIL_RECIPIENT = 'logos@logoscor.com.br';
 const CLOUDFLARE_WORKER_URL = 'https://email-site-logos.ac7wesley.workers.dev'; // Substitua pela URL do seu Worker
 const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzcqmUPHrhliUaHF1MjH5DpURJPgvIgzvW7z2T1KrIpr_axmg613cwldCEgwjf-uGxsCg/exec'; // Substitua pela URL do seu Web App do Google Apps Script
 // Configurações do SendPulse SMTP
-const SENDPULSE_SMTP = {
-  user: '21b3d17673984abf86ad76aaba6cc371',
-  pass: '528c8261e0755be29840f9bc06070fa6'
-};
+//const SENDPULSE_SMTP = {
+//  user: '',
+//  pass: ''
+//};
 // Manter EmailJS como fallback
 const EMAIL_SERVICE_ID = "service_e5q4p1c";
 const EMAIL_TEMPLATE_ID = "template_p4qs2s9";
