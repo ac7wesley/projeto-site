@@ -4,5 +4,5 @@ main = "src/index.js"
 compatibility_date = "2025-04-18"
 
 [vars]
-CLIENT_ID = "seu_client_id_sendpulse"
-CLIENT_SECRET = "seu_client_secret_sendpulse"
+CLIENT_ID = "21b3d17673984abf86ad76aaba6cc371"
+CLIENT_SECRET = "528c8261e0755be29840f9bc06070fa6"
