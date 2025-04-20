@@ -102,6 +102,9 @@ body {
   .titulo {
     font-size: 1.25rem;
   }
+  .grid {
+    display: block !important;
+  }
 }
 
 /* Seção Header */
