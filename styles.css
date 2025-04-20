@@ -12,6 +12,51 @@ body {
   background-color: #f8f9fa;
 }
 
+/* ... existing code ... */
+
+/* Estilo para o botão de navegação - ajustado para corresponder ao botão do seguro-auto.html */
+/* Correção para o botão de navegação no index.html */
+header.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav {
+  margin-left: auto;
+}
+
+.nav-list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-list li a.btn-primary {
+  display: inline-block !important;
+  background-color: #1a56db !important;
+  color: white !important;
+  font-weight: 600 !important;
+  padding: 0.75rem 1.5rem !important;
+  border-radius: 0.375rem !important;
+  text-decoration: none !important;
+  transition: all 0.3s ease !important;
+  font-size: 1rem !important;
+  text-align: center !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  border: none !important;
+  cursor: pointer !important;
+}
+
+.nav-list li a.btn-primary:hover {
+  background-color: #1e429f !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15) !important;
+}
+/* ... existing code ... */
+
+/* Estilos para o botão de navegação - ajustado para corresponder ao botão do seguro-auto.html */
+
 /* Container */
 .container {
   max-width: 1200px !important;
