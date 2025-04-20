@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seguro Auto | Cotação Personalizada | LogosCor Consórcio e Seguros</title>
+    <meta name="description" content="Solicite uma cotação personalizada de seguro auto com a LogosCor. Proteção completa para seu veículo com as melhores condições do mercado.">
+    <meta name="keywords" content="seguro auto, cotação seguro veicular, seguro de carro, proteção veicular, LogosCor, consórcio, seguros">
+    <meta name="author" content="LogosCor Consórcio e Seguros">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.logoscor.com.br/seguro-auto">
+    <meta property="og:title" content="Seguro Auto | Cotação Personalizada | LogosCor">
+    <meta property="og:description" content="Solicite uma cotação personalizada de seguro auto com a LogosCor. Proteção completa para seu veículo com as melhores condições do mercado.">
+    <meta property="og:image" content="https://www.logoscor.com.br/og-image.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.logoscor.com.br/seguro-auto">
+    <meta property="twitter:title" content="Seguro Auto | Cotação Personalizada | LogosCor">
+    <meta property="twitter:description" content="Solicite uma cotação personalizada de seguro auto com a LogosCor. Proteção completa para seu veículo com as melhores condições do mercado.">
+    <meta property="twitter:image" content="https://www.logoscor.com.br/og-image.jpg">
+    
+    <link rel="canonical" href="https://www.logoscor.com.br/seguro-auto">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="seguro-auto.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-flex">
+            <div class="logo-wrapper">
+                <a href="index.html" title="LogosCor Consórcio e Seguros - Página Inicial">
+                    <img src="logo.png" alt="LogosCor Consórcio e Seguros" class="logo">
+                </a>
+            </div>
+            <nav class="nav" aria-label="Navegação principal">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="btn-primary" title="Solicitar Consórcio">Solicitar Consórcio</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main>
+        <section class="seguro-form-wrapper">
+            <div class="container">
+                <div class="page-title">
+                    <h1>Solicite seu Seguro Automóvel </h1>
+                    <p>Preencha as informações abaixo para obter uma cotação personalizada de Seguro Auto</p>
+                </div>
+                
+                <div class="form-container" itemscope itemtype="http://schema.org/InsuranceAgency">
+                    <meta itemprop="name" content="LogosCor Consórcio e Seguros">
+                    <meta itemprop="description" content="Empresa especializada em seguros auto e consórcios com as melhores condições do mercado.">
+                    
+                    <form id="seguroAutoForm" onsubmit="return validarFormulario()">
+                        <!-- Seção de Informações do Condutor -->
+                        <div class="form-section">
+                            <h2>Informações do Condutor</h2>
+                            
+                            <!-- Resto do conteúdo da seção permanece igual -->
+                            <div class="form-group">
+                                <label for="cep">CEP onde o veículo pernoita:</label>
+                                <input type="text" id="cep" name="cep" class="form-control" maxlength="9" placeholder="00000-000">
+                                <div id="cepError" class="error-message">CEP inválido</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Reside em casa ou apartamento?</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="residenciaCasa" name="tipoResidencia" value="Casa">
+                                        <label for="residenciaCasa">Casa</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="residenciaApto" name="tipoResidencia" value="Apartamento">
+                                        <label for="residenciaApto">Apartamento</label>
+                                    </div>
+                                </div>
+                                <div id="tipoResidenciaError" class="error-message">Selecione uma opção</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Veículo fica em garagem fechada na residência?</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="garagemResidenciaSim" name="garagemResidencia" value="Sim" onchange="toggleGaragemTipo()">
+                                        <label for="garagemResidenciaSim">Sim</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="garagemResidenciaNao" name="garagemResidencia" value="Não" onchange="toggleGaragemTipo()">
+                                        <label for="garagemResidenciaNao">Não</label>
+                                    </div>
+                                </div>
+                                <div id="garagemResidenciaError" class="error-message">Selecione uma opção</div>
+                                
+                                <div id="tipoPortaoContainer" class="conditional-field">
+                                    <label>Tipo de portão:</label>
+                                    <div class="radio-group">
+                                        <div class="radio-option">
+                                            <input type="radio" id="portaoEletronico" name="tipoPortao" value="Eletrônico">
+                                            <label for="portaoEletronico">Eletrônico</label>
+                                        </div>
+                                        <div class="radio-option">
+                                            <input type="radio" id="portaoManual" name="tipoPortao" value="Manual">
+                                            <label for="portaoManual">Manual</label>
+                                        </div>
+                                    </div>
+                                    <div id="tipoPortaoError" class="error-message">Selecione uma opção</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Veículo fica em garagem fechada no local de estudos?</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="garagemEstudosSim" name="garagemEstudos" value="Sim">
+                                        <label for="garagemEstudosSim">Sim</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="garagemEstudosNao" name="garagemEstudos" value="Não">
+                                        <label for="garagemEstudosNao">Não</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="garagemEstudosNA" name="garagemEstudos" value="Não se aplica">
+                                        <label for="garagemEstudosNA">Não se aplica</label>
+                                    </div>
+                                </div>
+                                <div id="garagemEstudosError" class="error-message">Selecione uma opção</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Veículo fica em garagem fechada no local de trabalho?</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="garagemTrabalhoSim" name="garagemTrabalho" value="Sim">
+                                        <label for="garagemTrabalhoSim">Sim</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="garagemTrabalhoNao" name="garagemTrabalho" value="Não">
+                                        <label for="garagemTrabalhoNao">Não</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="garagemTrabalhoNA" name="garagemTrabalho" value="Não se aplica">
+                                        <label for="garagemTrabalhoNA">Não se aplica</label>
+                                    </div>
+                                </div>
+                                <div id="garagemTrabalhoError" class="error-message">Selecione uma opção</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="distanciaTrabalho">Qual distância da residência ao local de trabalho?</label>
+                                <select id="distanciaTrabalho" name="distanciaTrabalho" class="form-control">
+                                    <option value="">Selecione</option>
+                                    <option value="Até 5km">Até 5km</option>
+                                    <option value="Entre 5km e 15km">Entre 5km e 15km</option>
+                                    <option value="Entre 15km e 30km">Entre 15km e 30km</option>
+                                    <option value="Acima de 30km">Acima de 30km</option>
+                                    <option value="Não se aplica">Não se aplica</option>
+                                </select>
+                                <div id="distanciaTrabalhoError" class="error-message">Selecione uma opção</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Reside com e/ou terá condutores com até 25 anos, que conduzirá o veículo até 2x na semana?</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="condutorJovemSim" name="condutorJovem" value="Sim" onchange="toggleCondutorJovemInfo()">
+                                        <label for="condutorJovemSim">Sim</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="condutorJovemNao" name="condutorJovem" value="Não" onchange="toggleCondutorJovemInfo()">
+                                        <label for="condutorJovemNao">Não</label>
+                                    </div>
+                                </div>
+                                <div id="condutorJovemError" class="error-message">Selecione uma opção</div>
+                                
+                                <div id="condutorJovemInfoContainer" class="conditional-field">
+                                    <div class="form-group">
+                                        <label for="idadeCondutorJovem">Idade:</label>
+                                        <input type="number" id="idadeCondutorJovem" name="idadeCondutorJovem" class="form-control" min="18" max="25">
+                                        <div id="idadeCondutorJovemError" class="error-message">Idade inválida</div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Sexo:</label>
+                                        <div class="radio-group">
+                                            <div class="radio-option">
+                                                <input type="radio" id="sexoMasculino" name="sexoCondutorJovem" value="Masculino">
+                                                <label for="sexoMasculino">Masculino</label>
+                                            </div>
+                                            <div class="radio-option">
+                                                <input type="radio" id="sexoFeminino" name="sexoCondutorJovem" value="Feminino">
+                                                <label for="sexoFeminino">Feminino</label>
+                                            </div>
+                                        </div>
+                                        <div id="sexoCondutorJovemError" class="error-message">Selecione uma opção</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="estadoCivil">Qual seu estado civil?</label>
+                                <select id="estadoCivil" name="estadoCivil" class="form-control">
+                                    <option value="">Selecione</option>
+                                    <option value="Solteiro(a)">Solteiro(a)</option>
+                                    <option value="Casado(a)">Casado(a)</option>
+                                    <option value="União Estável">União Estável</option>
+                                    <option value="Divorciado(a)">Divorciado(a)</option>
+                                    <option value="Viúvo(a)">Viúvo(a)</option>
+                                </select>
+                                <div id="estadoCivilError" class="error-message">Selecione uma opção</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="profissao">Qual sua profissão?</label>
+                                <input type="text" id="profissao" name="profissao" class="form-control">
+                                <div id="profissaoError" class="error-message">Campo obrigatório</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Tem filhos?</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="filhosSim" name="temFilhos" value="Sim" onchange="toggleFilhosInfo()">
+                                        <label for="filhosSim">Sim</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="filhosNao" name="temFilhos" value="Não" onchange="toggleFilhosInfo()">
+                                        <label for="filhosNao">Não</label>
+                                    </div>
+                                </div>
+                                <div id="temFilhosError" class="error-message">Selecione uma opção</div>
+                                
+                                <div id="filhosInfoContainer" class="conditional-field">
+                                    <label for="idadeFilhos">Qual idade dos filhos? (separar por vírgula)</label>
+                                    <input type="text" id="idadeFilhos" name="idadeFilhos" class="form-control" placeholder="Ex: 5, 12, 17">
+                                    <div id="idadeFilhosError" class="error-message">Campo obrigatório</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Seção de Uso do Veículo -->
+                        <div class="form-section">
+                            <h2>Uso do Veículo</h2>
+                            
+                            <div class="form-group">
+                                <label>Utiliza o veículo para:</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="usoLocomocao" name="usoVeiculo" value="Locomoção diária e lazer">
+                                        <label for="usoLocomocao">Somente locomoção diária e lazer</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="usoServicos" name="usoVeiculo" value="Prestação de serviços">
+                                        <label for="usoServicos">Prestação de serviços (visitando clientes/fornecedores)</label>
+                                    </div>
+                                </div>
+                                <div id="usoVeiculoError" class="error-message">Selecione uma opção</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Seção de Informações do Veículo -->
+                        <div class="form-section">
+                            <h2>Informações do Veículo</h2>
+                            
+                            <div class="form-group">
+                                <label for="marcaVeiculo">Marca:</label>
+                                <input type="text" id="marcaVeiculo" name="marcaVeiculo" class="form-control" placeholder="Ex: Toyota, Honda, Volkswagen">
+                                <div id="marcaVeiculoError" class="error-message">Campo obrigatório</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="modeloVeiculo">Modelo:</label>
+                                <input type="text" id="modeloVeiculo" name="modeloVeiculo" class="form-control" placeholder="Ex: Corolla, Civic, Golf">
+                                <div id="modeloVeiculoError" class="error-message">Campo obrigatório</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="anoVeiculo">Ano de Fabricação:</label>
+                                <input type="number" id="anoVeiculo" name="anoVeiculo" class="form-control" min="1999" max="2030" placeholder="Ex: 2020">
+                                <div id="anoVeiculoError" class="error-message">Ano inválido</div>
+                            </div>
+                            
+                            <!-- Campo Versão removido -->
+                            
+                            <div class="form-group">
+                                <label>Combustível:</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="combustivelGasolina" name="combustivel" value="Gasolina">
+                                        <label for="combustivelGasolina">Gasolina</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="combustivelEtanol" name="combustivel" value="Etanol">
+                                        <label for="combustivelEtanol">Etanol</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="combustivelFlex" name="combustivel" value="Flex">
+                                        <label for="combustivelFlex">Flex</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="combustivelDiesel" name="combustivel" value="Diesel">
+                                        <label for="combustivelDiesel">Diesel</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="combustivelEletrico" name="combustivel" value="Elétrico">
+                                        <label for="combustivelEletrico">Elétrico</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="combustivelHibrido" name="combustivel" value="Híbrido">
+                                        <label for="combustivelHibrido">Híbrido</label>
+                                    </div>
+                                </div>
+                                <div id="combustivelError" class="error-message">Selecione uma opção</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="placaVeiculo">Placa:</label>
+                                <input type="text" id="placaVeiculo" name="placaVeiculo" class="form-control" maxlength="8" placeholder="ABC-1234">
+                                <div id="placaVeiculoError" class="error-message">Placa inválida</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="chassiVeiculo">Chassi (opcional):</label>
+                                <input type="text" id="chassiVeiculo" name="chassiVeiculo" class="form-control" maxlength="17">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>O veículo possui blindagem?</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="blindagemSim" name="possuiBlindagem" value="Sim">
+                                        <label for="blindagemSim">Sim</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="blindagemNao" name="possuiBlindagem" value="Não">
+                                        <label for="blindagemNao">Não</label>
+                                    </div>
+                                </div>
+                                <div id="possuiBlindagemError" class="error-message">Selecione uma opção</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>O veículo possui kit gás?</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="kitGasSim" name="possuiKitGas" value="Sim">
+                                        <label for="kitGasSim">Sim</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="kitGasNao" name="possuiKitGas" value="Não">
+                                        <label for="kitGasNao">Não</label>
+                                    </div>
+                                </div>
+                                <div id="possuiKitGasError" class="error-message">Selecione uma opção</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Seção de Informações do Seguro -->
+                        <div class="form-section">
+                            <h2>Informações do Seguro</h2>
+                            
+                            <div class="form-group">
+                                <label>Seguro Novo ou Renovação?</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="seguroNovo" name="tipoSeguro" value="Novo" onchange="toggleRenovacaoInfo()">
+                                        <label for="seguroNovo">Novo</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="seguroRenovacao" name="tipoSeguro" value="Renovação" onchange="toggleRenovacaoInfo()">
+                                        <label for="seguroRenovacao">Renovação</label>
+                                    </div>
+                                </div>
+                                <div id="tipoSeguroError" class="error-message">Selecione uma opção</div>
+                                
+                                <div id="renovacaoInfoContainer" class="conditional-field">
+                                    <div class="form-group">
+                                        <label for="bonusAtual">Bônus atual:</label>
+                                        <select id="bonusAtual" name="bonusAtual" class="form-control">
+                                            <option value="">Selecione</option>
+                                            <option value="0">Classe 0</option>
+                                            <option value="1">Classe 1</option>
+                                            <option value="2">Classe 2</option>
+                                            <option value="3">Classe 3</option>
+                                            <option value="4">Classe 4</option>
+                                            <option value="5">Classe 5</option>
+                                            <option value="6">Classe 6</option>
+                                            <option value="7">Classe 7</option>
+                                            <option value="8">Classe 8</option>
+                                            <option value="9">Classe 9</option>
+                                            <option value="10">Classe 10</option>
+                                        </select>
+                                        <div id="bonusAtualError" class="error-message">Selecione uma opção</div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="seguradoraAtual">Seguradora atual:</label>
+                                        <input type="text" id="seguradoraAtual" name="seguradoraAtual" class="form-control">
+                                        <div id="seguradoraAtualError" class="error-message">Campo obrigatório</div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="vigenciaAtual">Vigência atual (data final):</label>
+                                        <input type="date" id="vigenciaAtual" name="vigenciaAtual" class="form-control">
+                                        <div id="vigenciaAtualError" class="error-message">Data inválida</div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Teve sinistros nesta vigência?</label>
+                                        <div class="radio-group">
+                                            <div class="radio-option">
+                                                <input type="radio" id="sinistroSim" name="teveSinistro" value="Sim">
+                                                <label for="sinistroSim">Sim</label>
+                                            </div>
+                                            <div class="radio-option">
+                                                <input type="radio" id="sinistroNao" name="teveSinistro" value="Não">
+                                                <label for="sinistroNao">Não</label>
+                                            </div>
+                                        </div>
+                                        <div id="teveSinistroError" class="error-message">Selecione uma opção</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Seção de Documentos -->
+                        <div class="form-section docs-section">
+                            <h2>Documentos Necessários</h2>
+                            <p>Para finalizar a cotação de seguro auto, precisaremos dos seguintes documentos:</p>
+                            <ul>
+                                <li>Documento do veículo (CRLV)</li>
+                                <li>CNH da pessoa que conduz o veículo 85% da semana</li>
+                            </ul>
+                            <p>Você poderá enviar esses documentos após o preenchimento deste formulário de seguro auto.</p>
+                        </div>
+                        
+                        <!-- Botão de Envio -->
+                        <div class="text-center">
+                            <button type="submit" class="btn-primary" id="enviarFormulario">
+                                <i class="fas fa-paper-plane"></i> Enviar Cotação
+                            </button>
+                        </div>
+                        
+                        <!-- Botão de Consórcio para Mobile -->
+                        <div class="mobile-consorcio-btn">
+                            <a href="index.html" class="btn-primary">
+                                <i class="fas fa-handshake"></i> Solicitar Consórcio
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+     <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <!-- Coluna 1 - Logo e Descrição -->
+        <div>
+          <img src="logo-white.png" alt="LogosCor Consórcios e Seguros - Realize seus sonhos com segurança" class="footer-logo">
+       
+        </div>
+
+        <!-- Coluna 2 - Links Rápidos -->
+        <div>
+          <h4 class="text-lg font-bold mb-4">Links Rápidos</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white">Sobre Nós</a></li>
+            <li><a href="#como-funciona" class="text-gray-400 hover:text-white">Como Funciona</a></li>
+            <li><a href="https://wa.me/556230153001?text=OLá%20vindo%20direto%20no%20site,%20Preciso%20de%20um%20atendimento!" class="text-gray-400 hover:text-white">Contato</a></li>
+          </ul>
+        </div>
+
+        <!-- Coluna 3 - Contato -->
+        <div>
+          <h4 class="text-lg font-bold mb-4">Contato</h4>
+          <ul class="space-y-2">
+            <li class="text-gray-400"><i class="fas fa-phone mr-2"></i><a href="https://wa.me/556230153001?text=OLá%20vindo%20direto%20no%20site,%20Preciso%20de%20um%20atendimento!" class="hover:text-white">Direto no WhatsApp</a></li>
+            <li class="text-gray-400"><i class="fas fa-envelope mr-2"></i>contato@logoscor.com.br</li>
+            <li class="text-gray-400"><i class="fas fa-map-marker-alt mr-2"></i>Goiânia, GO</li>
+          </ul>
+        </div>
+
+        <!-- Coluna 4 - Redes Sociais -->
+        <div>
+          <h4 class="text-lg font-bold mb-4">Siga-nos</h4>
+          <div class="flex space-x-4">
+            <a href="https://www.instagram.com/logoscor/" class="text-gray-400 hover:text-white text-2xl"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/alinealvescorretora/" class="text-gray-400 hover:text-white text-2xl"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.instagram.com/viverconsorcio/" class="text-gray-400 hover:text-white text-2xl"><i class="fab fa-linkedin"></i></a>
+            
+          </div>
+          <p class="footer-description">Viver seguro é bom de mais.</p>
+        </div>
+      </div>
+
+      <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+        <p>&copy; 2025 Logos Consórcios e Seguros. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+    <!-- Incluir os arquivos JavaScript externos -->
+    <script src="seguro-auto.js"></script>
+    <script src="envia-seguro-auto.js"></script>
+</body>
+</html>

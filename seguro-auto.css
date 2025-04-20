@@ -1,0 +1,617 @@
+/* Atualização de cores e estilo para combinar com o design da LogosCor */
+.form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.form-section {
+    margin-bottom: 35px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.form-section h3 {
+    color: #2d3748;
+    margin-bottom: 20px;
+    font-weight: 600;
+    font-size: 1.3rem;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.form-section h3:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 60px;
+    height: 3px;
+    background-color: #1a56db;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #4a5568;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background-color: #f8fafc;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #3182ce;
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+    background-color: #fff;
+}
+
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 8px;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background-color: #f8fafc;
+    transition: all 0.2s ease;
+}
+
+.radio-option:hover {
+    background-color: #edf2f7;
+}
+
+.radio-option input[type="radio"] {
+    accent-color: #1a56db;
+    width: 18px;
+    height: 18px;
+}
+
+.radio-option label {
+    margin-bottom: 0;
+    cursor: pointer;
+}
+
+.conditional-field {
+    margin-top: 15px;
+    padding: 15px;
+    border-left: 3px solid #3182ce;
+    background-color: #ebf4ff;
+    border-radius: 0 6px 6px 0;
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #1a56db;
+    color: white;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-primary:hover {
+    background-color: #1e429f;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(26, 86, 219, 0.25);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.error-message {
+    color: #e53e3e;
+    font-size: 14px;
+    margin-top: 6px;
+    display: none;
+    font-weight: 500;
+}
+
+.border-error {
+    border-color: #e53e3e;
+}
+
+.form-control.border-error:focus {
+    box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+}
+
+/* Animações */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Animação para destacar campos com erro durante rolagem */
+@keyframes highlightError {
+    0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+    50% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0.2); }
+    100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+}
+
+.highlight-error {
+    animation: highlightError 1.5s ease-in-out;
+}
+
+/* Melhorar a visualização do form-group com erro */
+.form-group.highlight-error {
+    padding: 10px;
+    border-radius: 6px;
+    background-color: rgba(220, 38, 38, 0.05);
+    transition: background-color 0.3s ease;
+}
+
+.radio-error {
+    border: 1px solid #e53e3e;
+    border-radius: 6px;
+    padding: 8px;
+    background-color: rgba(229, 62, 62, 0.05);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 20px;
+    }
+    
+    .radio-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* Seção de documentos */
+.docs-section {
+    background-color: rgba(49, 130, 206, 0.05);
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #3182ce;
+    margin-bottom: 25px;
+}
+
+.docs-section h4 {
+    color: #2d3748;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.docs-section ul {
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+.docs-section li {
+    margin-bottom: 8px;
+    position: relative;
+    padding-left: 5px;
+}
+
+.docs-section li:before {
+    content: "•";
+    color: #3182ce;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+/* Título da página */
+.page-title {
+    text-align: center;
+    margin-top: -5rem;
+    margin-bottom: 2.5rem;
+}
+
+.page-title h1 {
+    color: #2d3748;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+}
+
+.page-title p {
+    color: #718096;
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: 0 auto;
+    margin-bottom: -2rem;
+}
+
+/* Estilo para o formulário completo */
+.seguro-form-wrapper {
+    padding: 3rem 0;
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+}
+
+/* Classes utilitárias */
+.text-center {
+    text-align: center;
+}
+
+.mb-6 {
+    margin-bottom: 1.5rem;
+}
+
+/* Progresso do formulário */
+.form-progress {
+    height: 6px;
+    background-color: #e2e8f0;
+    border-radius: 3px;
+    margin-bottom: 30px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: #1a56db;
+    width: 0;
+    transition: width 0.3s ease;
+}
+
+/* Estilos para o cabeçalho */
+.header {
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 20px 0;
+    margin-bottom: 30px;
+    width: 100%;
+    position: relative;
+    z-index: 100;
+}
+
+.header .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 260px;
+    width: auto;
+    display: block;
+    margin-top: -150px;
+    margin-left: 200px;
+}
+
+.nav-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-top: -30px;
+    margin-right: 200px;
+}
+
+.nav-list li {
+    list-style-type: none;
+}
+
+/* Remover a logo que aparece no conteúdo principal */
+.seguro-form-wrapper img[src="logo.png"] {
+    display: none;
+}
+
+/* Botão adicional para mobile que aparecerá no final do formulário */
+.mobile-consorcio-btn {
+    display: none;
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .header-flex {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+    
+    .logo {
+        margin-left: 0;
+        margin-right: 0;
+        height: 240px;
+        margin-top: -100px;
+    }
+    
+    .nav-list {
+        margin-top: 10px;
+        margin-right: 0;
+        display: none; /* Oculta o botão no header em mobile */
+    }
+    
+    .mobile-consorcio-btn {
+        display: block; /* Mostra o botão no final do formulário em mobile */
+        margin-top: 3rem;
+    }
+    
+    .form-container {
+        padding: 20px;
+    }
+    
+    .radio-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .page-title {
+        margin-top: -7rem;
+    }
+    
+    .page-title h1 {
+        font-size: 1.8rem;
+    }
+    
+    .page-title p {
+        font-size: 1rem;
+        margin-bottom: -1rem;
+    }
+}
+
+/* Configuração específica para tablets (834x1194) */
+@media (min-width: 769px) and (max-width: 884px) {
+    .header-flex {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+    
+    .logo {
+        margin-left: 0;
+        margin-right: 0;
+        height: 260px;
+        margin-top: -120px;
+    }
+    
+    .nav-list {
+        margin-top: 10px;
+        margin-right: 0;
+        display: none; /* Oculta o botão no header em tablet */
+    }
+    
+    .mobile-consorcio-btn {
+        display: block; /* Mostra o botão no final do formulário em tablet */
+        margin-top: 2.5rem;
+    }
+    
+    .form-container {
+        padding: 25px;
+    }
+    
+    .page-title {
+        margin-top: -6rem;
+    }
+    
+    .page-title h1 {
+        font-size: 2rem;
+    }
+    
+    .page-title p {
+        font-size: 1.05rem;
+        margin-bottom: -1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        height: 250px;
+        margin-top: -140px;
+        margin-bottom: -9rem;
+        
+    }
+    
+    .form-container {
+        padding: 5px;
+    }
+    
+    .btn-primary {
+        width: 100%;
+    }
+}
+
+/* Mensagens de sucesso, erro e carregamento */
+.mensagem-sucesso, .mensagem-erro, .mensagem-carregamento {
+    padding: 15px;
+    border-radius: 6px;
+    margin: 20px 0;
+    font-weight: 500;
+    text-align: center;
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.mensagem-sucesso {
+    background-color: #c6f6d5;
+    color: #2f855a;
+    border: 1px solid #9ae6b4;
+}
+
+.mensagem-erro {
+    background-color: #fed7d7;
+    color: #c53030;
+    border: 1px solid #feb2b2;
+}
+
+.mensagem-carregamento {
+    background-color: #e9f5fe;
+    color: #3182ce;
+    border: 1px solid #bee3f8;
+}
+
+/* Footer Styles */
+.bg-gray-800 {
+  background-color: #2d3748;
+}
+
+.text-white {
+  color: #ffffff;
+}
+
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.grid {
+  display: grid;
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.md\:grid-cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (min-width: 768px) {
+  .md\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.gap-8 {
+  gap: 2rem;
+}
+
+.footer-logo {
+  max-width: 220px;
+  margin-bottom: 1rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.space-y-2 > * + * {
+  margin-top: 0.5rem;
+}
+
+.text-gray-400 {
+  color: #a0aec0;
+}
+
+.hover\:text-white:hover {
+  color: #ffffff;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.space-x-4 > * + * {
+  margin-left: 1rem;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+}
+
+.footer-description {
+  color: #a0aec0;
+  margin-top: 1rem;
+}
+
+.border-t {
+  border-top-width: 1px;
+}
+
+.border-gray-700 {
+  border-color: #4a5568;
+}
+
+.mt-8 {
+  margin-top: 2rem;
+}
+
+.pt-8 {
+  margin-top: -5rem;
+  padding-top: 2rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Ajustes para remover bolinhas e padronizar cores no footer */
+footer ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+footer ul li a {
+  color: #a0aec0 !important;
+  text-decoration: none;
+}
+
+footer ul li a:hover {
+  color: #ffffff !important;
+}

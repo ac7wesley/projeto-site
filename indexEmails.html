@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Solicite seu consórcio com a LogosCor. Compare valores, escolha o melhor plano e realize seus sonhos com segurança e economia.">
+  <title>Solicite seu Consórcio | LogosCor - Realize seus sonhos com segurança</title>
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="theme-color" content="#ffffff">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="stylesEmails.css">
+  <!-- EmailJS para envio de emails - solução gratuita -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function() {
+      emailjs.init("3V_t4CeqYZ1q-BVVJ"); // chave pública
+    })();
+  </script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <!-- Iframe oculto para a resposta do formulário -->
+  <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+  
+  <!-- Header -->
+  <header class="container">
+    <div class="logo-wrapper">
+      <img src="Logo.png" alt="LogosCor Consórcios e Seguros - Realize seus sonhos com segurança" class="logo">
+    </div>
+  </header>
+
+  <!-- Hero Section com Formulário -->
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-2 gap-1">
+        <!-- Coluna do Formulário -->
+        <div class="form-card">
+          <h1 class="titulo text-center">
+            <span class="titulo-prefixo">SOLICITE SEU</span>
+            <span class="titulo-destaque">CONSÓRCIO</span>
+          </h1>
+          <p class="text-center mb-4">O melhor plano para realizar seus sonhos com segurança e economia.</p>
+          
+          <!-- Barra de Progresso -->
+          <div class="progress-bar">
+            <div id="progressBar" class="progress-bar-fill" style="width: 50%"></div>
+          </div>
+
+          <!-- Formulário Etapa 1 -->
+          <form id="formEtapa1" class="form">
+            <div class="form-group">
+              <label class="form-label" for="nome"><i class="fas fa-user"></i> Nome Completo:</label>
+              <input type="text" id="nome" class="form-input" required>
+              <div class="form-error" id="nomeError" style="display: none;"><i class="fas fa-exclamation-circle"></i> Por favor, insira seu nome completo</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="email"><i class="fas fa-envelope"></i> E-mail:</label>
+              <input type="email" id="email" class="form-input" required>
+              <div class="form-error" id="emailError" style="display: none;"><i class="fas fa-exclamation-circle"></i> Por favor, insira um e-mail válido</div>
+            </div>
+
+            <div class="grid grid-2">
+              <div class="form-group">
+                <label class="form-label" for="telefone"><i class="fas fa-phone"></i> Telefone:</label>
+                <input type="tel" id="telefone" class="form-input" placeholder="(00) 00000-0000" required>
+                <div class="form-error" id="telefoneError" style="display: none;"><i class="fas fa-exclamation-circle"></i> Por favor, insira um telefone válido</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="idade"><i class="fas fa-birthday-cake"></i> Idade:</label>
+                <input type="number" id="idade" class="form-input" min="18" max="70" required>
+                <div class="form-error" id="idadeError" style="display: none;"><i class="fas fa-exclamation-circle"></i> Idade deve ser entre 18 e 63 anos</div>
+              </div>
+            </div>
+
+            <div class="grid grid-2">
+              <div class="form-group">
+                <label class="form-label" for="cidade"><i class="fas fa-city"></i> Cidade:</label>
+                <input type="text" id="cidade" class="form-input" required>
+                <div class="form-error" id="cidadeError" style="display: none;"><i class="fas fa-exclamation-circle"></i> Por favor, insira sua cidade</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="estado"><i class="fas fa-map-marker-alt"></i> Estado:</label>
+                <select id="estado" class="form-input" required>
+                  <option value="">UF</option>
+                  <option value="AC">AC</option>
+                  <option value="AL">AL</option>
+                  <option value="AP">AP</option>
+                  <option value="AM">AM</option>
+                  <option value="BA">BA</option>
+                  <option value="CE">CE</option>
+                  <option value="DF">DF</option>
+                  <option value="ES">ES</option>
+                  <option value="GO">GO</option>
+                  <option value="MA">MA</option>
+                  <option value="MT">MT</option>
+                  <option value="MS">MS</option>
+                  <option value="MG">MG</option>
+                  <option value="PA">PA</option>
+                  <option value="PB">PB</option>
+                  <option value="PR">PR</option>
+                  <option value="PE">PE</option>
+                  <option value="PI">PI</option>
+                  <option value="RJ">RJ</option>
+                  <option value="RN">RN</option>
+                  <option value="RS">RS</option>
+                  <option value="RO">RO</option>
+                  <option value="RR">RR</option>
+                  <option value="SC">SC</option>
+                  <option value="SP">SP</option>
+                  <option value="SE">SE</option>
+                  <option value="TO">TO</option>
+                </select>
+                <div class="form-error" id="estadoError" style="display: none;"><i class="fas fa-exclamation-circle"></i> Por favor, selecione seu estado</div>
+              </div>
+            </div>
+
+            <button type="button" onclick="validarEtapa1()" class="btn btn-primary w-100 btn-avancar">
+              <i class="fas fa-arrow-right-to-bracket"></i> Avançar
+            </button>
+            <p class="text-center text-base text-gray-600 mt-2">
+              <i class="fas fa-check-circle text-blue-600 mr-1"></i> Consultoria Personalizada e Gratuita!
+            </p>
+          </form>
+
+          <!-- Formulário Etapa 2 -->
+          <form id="formEtapa2" class="form hidden">
+            <div class="form-group">
+              <label class="form-label" for="objetivo"><i class="fas fa-bullseye"></i> O que deseja conquistar?</label>
+              <select id="objetivo" class="form-input" required>
+                <option value="">Selecione...</option>
+                <option>Carro</option>
+                <option>Moto</option>
+                <option>Veículo para trabalho</option>
+                <option>Casa</option>
+                <option>Apartamento</option>
+                <option>Imóvel comercial</option>
+                <option>Construção</option>
+                <option>Sitio</option>
+                <option>Fazenda</option>
+                <option>Outro</option>
+              </select>
+              <div class="form-error" id="objetivoError" style="display: none;"><i class="fas fa-exclamation-circle"></i> Selecione uma opção</div>
+            </div>
+
+            <!-- Slider Valor do Crédito -->
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-hand-holding-usd"></i> Valor do Crédito: <span id="creditoValor" class="valor-destaque">R$ 0,00</span></label>
+              <input type="range" id="credito" class="range-slider" min="0000" max="2000000" step="1000" value="0" required>
+              <div class="range-markers">
+                <span>R$ 25K</span>
+                <span>R$ 500K</span>
+                <span>R$ 1M</span>
+                <span>R$ 2M</span>
+              </div>
+              <div class="form-error" id="creditoError" style="display: none;"><i class="fas fa-exclamation-circle"></i> Escolha um valor de crédito</div>
+            </div>
+
+            <!-- Slider Valor da Parcela -->
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-wallet"></i> Valor ideal de Parcela: <span id="parcelaValor" class="valor-destaque">R$ 0,00</span></label>
+              <input type="range" id="parcela" class="range-slider" min="000" max="20000" step="50" value="0" required>
+              <div class="range-markers">
+                <span>R$ 300</span>
+                <span>R$ 4K</span>
+                <span>R$ 8K</span>
+                <span>R$ 20K</span>
+              </div>
+              <div class="form-error" id="parcelaError" style="display: none;"><i class="fas fa-exclamation-circle"></i> Escolha um valor de parcela</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="profissao"><i class="fas fa-briefcase"></i> Qual a sua Profissão?</label>
+              <input type="text" id="profissao" class="form-input" required>
+              <div class="form-error" id="profissaoError" style="display: none;"><i class="fas fa-exclamation-circle"></i> Informe sua profissão</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="origem"><i class="fas fa-question-circle"></i> Como nos conheceu?</label>
+              <select id="origem" class="form-input" required>
+                <option value="">Selecione...</option>
+                <option>Instagram</option>
+                <option>Google</option>
+                <option>Indicação</option>
+                <option>Outro</option>
+              </select>
+              <div class="form-error" id="origemError" style="display: none;"><i class="fas fa-exclamation-circle"></i> Campo obrigatório</div>
+              <div id="outroOrigemContainer" class="form-group" style="display: none;">
+                <input type="text" id="outroOrigem" class="form-input" placeholder="Especifique como nos conheceu...">
+                <div class="form-error" id="outroOrigemError" style="display: none;"><i class="fas fa-exclamation-circle"></i> Por favor, especifique como nos conheceu</div>
+              </div>
+            </div>
+
+            <button type="button" onclick="validarEtapa2()" class="btn btn-primary w-100 mb-2 btn-avancar">
+              <i class="fas fa-paper-plane"></i> Enviar Simulação
+            </button>
+            
+            <button type="button" onclick="voltarEtapa1()" class="btn btn-secondary w-100">
+              <i class="fas fa-arrow-left"></i> Voltar
+            </button>
+          </form>
+
+          <!-- Mensagem de Confirmação -->
+          <div id="confirmacaoEnvio" class="confirmacao hidden">
+            <div class="alert alert-success">
+              <i class="fas fa-check-circle"></i>
+              <h3>INICIAR CONVERSA!</h3>
+              <p>Continue no WhatsApp para iniciar uma conversa, e um de nossos consultores falará com você em breve.</p>
+            </div>
+            <button onclick="window.location.reload()" class="btn btn-primary w-100">
+              <i class="fas fa-redo"></i> Fazer Nova Simulação
+            </button>
+          </div>
+        </div>
+
+        <!-- Coluna das Vantagens -->
+        <div class="h-full overflow-y-auto py-2 px-3">
+          <div class="mb-4 relative">
+            <h2 class="titulo-consorcio relative z-10 font-semibold text-center md:text-left">
+              <span class="titulo-prefixo text-gray-800 font-semibold block md:inline">5 MAIORES VANTAGENS DO </span>
+              <span class="titulo-destaque font-semibold block md:inline">CONSÓRCIO</span>
+            </h2>
+            <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-blue-600"></div>
+          </div>
+          
+          <p class="text-gray-600 mb-6 text-base md:text-lg text-center md:text-left">Por que o consórcio é a escolha mais inteligente e econômica para realizar seus objetivos.</p>
+          
+          <ul class="space-y-4 pr-2">
+            <li class="flex items-start space-x-4 p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div class="text-blue-600 text-2xl mt-1 flex-shrink-0">
+                <i class="fas fa-percent"></i>
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-800 mb-2">1. Sem juros</h4>
+                <p class="text-gray-600 text-sm md:text-base">Esse é o maior diferencial do consórcio em relação ao financiamento. Em vez de pagar juros altos, você paga apenas uma taxa de administração diluída nas parcelas.</p>
+              </div>
+            </li>
+            
+            <li class="flex items-start space-x-4 p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div class="text-blue-600 text-2xl mt-1 flex-shrink-0">
+                <i class="fas fa-piggy-bank"></i>
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-800 mb-2">2. Custo final mais baixo</h4>
+                <p class="text-gray-600 text-sm md:text-base">Graças à ausência de juros, o valor total que você paga no consórcio é bem menor do que no financiamento.</p>
+              </div>
+            </li>
+            
+            <li class="flex items-start space-x-4 p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div class="text-blue-600 text-2xl mt-1 flex-shrink-0">
+                <i class="fas fa-money-bill-wave"></i>
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-800 mb-2">3. Poder de compra à vista</h4>
+                <p class="text-gray-600 text-sm md:text-base">Ao ser contemplado, você pode usar a carta de crédito como pagamento à vista — o que abre espaço para uma melhor negociação.</p>
+              </div>
+            </li>
+            
+            <li class="flex items-start space-x-4 p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div class="text-blue-600 text-2xl mt-1 flex-shrink-0">
+                <i class="fas fa-trophy"></i>
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-800 mb-2">4. Lance para antecipar</h4>
+                <p class="text-gray-600 text-sm md:text-base">Mesmo que o consórcio seja uma compra planejada, quem tem um valor guardado pode antecipar a contemplação com um lance.</p>
+              </div>
+            </li>
+            
+            <li class="flex items-start space-x-4 p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div class="text-blue-600 text-2xl mt-1 flex-shrink-0">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-800 mb-2">5. Planejamento inteligente</h4>
+                <p class="text-gray-600 text-sm md:text-base">O consórcio ajuda a criar uma rotina de disciplina financeira, ideal para alcançar objetivos de médio e longo prazo.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção de Consórcio de Carros -->
+  <section class="py-8 bg-gradient-to-br from-gray-50 to-gray-100">
+    <div class="container mx-auto px-4 max-w-[1920px]">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center justify-center max-w-6xl mx-auto">
+        <!-- Coluna da Imagem -->
+        <div class="block h-[300px] md:h-[500px] relative overflow-hidden rounded-lg shadow-xl">
+          <img src="consorcio-auto.png" alt="Casal feliz com as chaves do carro novo adiquirido com o consórcio" 
+               class="w-full h-full object-cover object-[center_100%] transition-transform duration-700 hover:scale-105">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+        </div>
+        
+        <!-- Coluna do Texto consórcio de carros -->
+        <div class="h-full overflow-y-auto py-2 md:pl-6">
+          <div class="mb-4 relative text-center md:text-left">
+            <h2 class="titulo-carros relative z-10 font-semibold">
+              <span class="titulo-prefixo text-gray-800 font-semibold">POR QUE FAZER O</span>
+              <span class="titulo-destaque font-semibold">CONSÓRCIO DE CARROS?</span>
+            </h2>
+            <div class="absolute bottom-0 left-0 w-24 h-1 bg-blue-600"></div>
+          </div>
+          
+          <ul class="space-y-4">
+            <li class="flex items-start space-x-4 p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div class="text-blue-600 text-xl mt-1">
+                <i class="fas fa-calendar-alt"></i>
+              </div>
+              <div>
+                <p class="text-gray-800">Você paga em até <span class="text-blue-600 font-semibold">120 meses</span>, sem <span class="text-blue-600 font-semibold">entrada</span> e sem <span class="text-blue-600 font-semibold">juros</span>;</p>
+              </div>
+            </li>
+            
+            <li class="flex items-start space-x-4 p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div class="text-blue-600 text-xl mt-1">
+                <i class="fas fa-piggy-bank"></i>
+              </div>
+              <div>
+                <p class="text-gray-800">Parcelas reduzidas até a contemplação;</p>
+              </div>
+            </li>
+            
+            <li class="flex items-start space-x-4 p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div class="text-blue-600 text-xl mt-1">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <div>
+                <p class="text-gray-800">Use até <span class="text-blue-600 font-semibold">20%</span> do seu crédito para aumentar seu lance;</p>
+              </div>
+            </li>
+            
+            <li class="flex items-start space-x-4 p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div class="text-blue-600 text-xl mt-1">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div>
+                <p class="text-gray-800">Liberdade de escolha para comprar o bem que desejar;</p>
+              </div>
+            </li>
+            
+            <li class="flex items-start space-x-4 p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div class="text-blue-600 text-xl mt-1">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <div>
+                <p class="text-gray-800">Utilize parte seu crédito para pagar a documentação e o seguro do veículo.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Seção de Consórcio Imobiliário -->
+  <section class="py-8 bg-gradient-to-br from-gray-50 to-gray-100">
+    <div class="container mx-auto px-4 max-w-[1920px]">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center justify-center max-w-6xl mx-auto">
+        <!-- Coluna do Texto -->
+        <div class="h-full overflow-y-auto py-2 md:pr-6 order-2 md:order-1">
+          <div class="mb-4 relative">
+            <h2 class="titulo-imovel relative z-10 font-semibold">
+              <span class="titulo-prefixo text-gray-800 font-semibold">POR QUE ESCOLHER O</span>
+              <span class="titulo-destaque font-semibold">CONSÓRCIO IMOBILIÁRIO?</span>
+            </h2>
+            <div class="absolute bottom-0 left-0 w-24 h-1 bg-blue-600"></div>
+          </div>
+          
+          <ul class="space-y-4">
+            <li class="flex items-start space-x-4 p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div class="text-blue-600 text-xl mt-1">
+                <i class="fas fa-calendar-alt"></i>
+              </div>
+              <div>
+                <p class="text-gray-800">Pague em até <span class="text-blue-600 font-semibold">240 meses</span> sem <span class="text-blue-600 font-semibold">juros</span>;</p>
+              </div>
+            </li>
+            
+            <li class="flex items-start space-x-4 p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div class="text-blue-600 text-xl mt-1">
+                <i class="fas fa-piggy-bank"></i>
+              </div>
+              <div>
+                <p class="text-gray-800">Parcelas reduzidas até a contemplação;</p>
+              </div>
+            </li>
+            
+            <li class="flex items-start space-x-4 p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div class="text-blue-600 text-xl mt-1">
+                <i class="fas fa-home"></i>
+              </div>
+              <div>
+                <p class="text-gray-800">Possibilidade de usar o <span class="text-blue-600 font-semibold">FGTS</span>;</p>
+              </div>
+            </li>
+            
+            <li class="flex items-start space-x-4 p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div class="text-blue-600 text-xl mt-1">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <div>
+                <p class="text-gray-800">Use até <span class="text-blue-600 font-semibold">30%</span> do seu crédito para aumentar seu lance;</p>
+              </div>
+            </li>
+            
+            <li class="flex items-start space-x-4 p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div class="text-blue-600 text-xl mt-1">
+                <i class="fas fa-file-alt"></i>
+              </div>
+              <div>
+                <p class="text-gray-800">Utilize até <span class="text-blue-600 font-semibold">20%</span> do seu crédito para pagamento da documentação do imóvel no cartório e fazer móveis planejados.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Coluna da Imagem -->
+        <div class="block h-[300px] md:h-[500px] relative overflow-hidden rounded-lg shadow-xl order-1 md:order-2">
+          <img src="Consorcio-imovel.png" alt="Casal feliz com sua nova casa adiquirida com o consórcio" 
+               class="w-full h-full object-cover object-[center_40%] transition-transform duration-700 hover:scale-105">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  
+
+  <!-- Seção de Vantagens do Consórcio -->
+  <section class="section section-gradient">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="titulo titulo-funciona">
+          <span class="titulo-prefixo">POR QUE ESCOLHER A</span>
+          <span class="titulo-destaque">LOGOSCOR CONSÓRCIO E SEGUROS?</span>
+        </h2>
+      </div>
+      
+      <div class="grid grid-4">
+        <!-- Item 1 -->
+        <div class="card">
+          <div class="card-icon">
+            <i class="fas fa-user-tie"></i>
+          </div>
+          <h3 class="card-title">Consultoria Personalizada</h3>
+          <p class="card-text">Juntos, definimos o melhor plano para atingir o seu objetivo.</p>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="card">
+          <div class="card-icon">
+            <i class="fas fa-file-signature"></i>
+          </div>
+          <h3 class="card-title">Contratação Simples e Rápida</h3>
+          <p class="card-text">Ao fechar com a gente, assine a proposta digital de onde estiver.</p>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="card">
+          <div class="card-icon">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <h3 class="card-title">Chances reais desde o 1º mês</h3>
+          <p class="card-text">Após o 1º mês, você já tem chance de contemplação.</p>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="card">
+          <div class="card-icon">
+            <i class="fas fa-trophy"></i>
+          </div>
+          <h3 class="card-title">O momento mais esperado</h3>
+          <p class="card-text">Na contemplação, você conta com crédito para o seu objetivo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção de Como Funciona -->
+  <section id="como-funciona" class="section section-gradient">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="titulo titulo-funciona">
+          <span class="titulo-prefixo">COMO</span>
+          <span class="titulo-destaque">FUNCIONA?</span>
+        </h2>
+      </div>
+      
+      <div class="grid grid-4">
+        <!-- Passo 1 -->
+        <div class="card step-card">
+          <div class="card-icon">
+            <i class="fas fa-calculator"></i>
+          </div>
+          <h3 class="card-title">1. Simule</h3>
+          <p class="card-text">Preencha o formulário com seus dados e objetivos.</p>
+        </div>
+
+        <!-- Passo 2 -->
+        <div class="card step-card">
+          <div class="card-icon">
+            <i class="fas fa-comments"></i>
+          </div>
+          <h3 class="card-title">2. Converse</h3>
+          <p class="card-text">Receba atendimento personalizado via WhatsApp.</p>
+        </div>
+
+        <!-- Passo 3 -->
+        <div class="card step-card">
+          <div class="card-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <h3 class="card-title">3. Escolha</h3>
+          <p class="card-text">Selecione o melhor plano para você.</p>
+        </div>
+
+        <!-- Passo 4 -->
+        <div class="card step-card">
+          <div class="card-icon">
+            <i class="fas fa-star"></i>
+          </div>
+          <h3 class="card-title">4. Realize</h3>
+          <p class="card-text">Conquiste seus objetivos com segurança.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+   <!-- Seção Divisória -->
+   <section class="section-divider py-8 md:py-12 relative overflow-hidden">
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="text-center">
+        <div class="mb-4 relative">
+          <h2 class="titulo-consorcio titulo-consorcio">
+            <span class="titulo-prefixo text-white font-bold">REALIZE SEUS SONHOS COM</span>
+            <span class="titulo-destaque text-white font-bold">SEGURANÇA</span>
+          </h2>
+          <div class="absolute bottom-0 left-0 w-24 h-1 bg-white"></div>
+        </div>
+        <p class="text-white text-lg md:text-xl max-w-2xl mx-auto mb-6 md:mb-8">Faça sua simulação agora e descubra como o consórcio pode ser o caminho para sua conquista.</p>
+        <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;" class="solicite-btn inline-block bg-white text-blue-800 font-bold py-2 md:py-3 px-6 md:px-8 rounded-full hover:bg-blue-100 transition-all shadow-lg">
+          <i class="fas fa-calculator mr-2"></i>Solicite Agora
+        </a>
+      </div>
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-r from-blue-900 to-teal-600 opacity-90"></div>
+    <div class="absolute inset-0 bg-pattern opacity-10"></div>
+  </section>
+
+  <!-- Seção de Depoimentos -->
+  <section class="bg-gradient-to-r from-blue-50 to-teal-50 py-8 md:py-12 relative overflow-hidden">
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="mb-4 relative text-center">
+        <h2 class="titulo titulo-depoimentos">
+          <span class="titulo-prefixo">DEPOIMENTOS</span>
+          <span class="titulo-destaque">DE CLIENTES</span>
+        </h2>
+        <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-blue-600"></div>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <!-- Depoimento 1 -->
+        <div class="glass-card p-6 relative overflow-hidden rounded-lg shadow-lg hover-effect">
+          <div class="text-yellow-400 mb-4 text-left">
+            ★★★★★
+          </div>
+          <p class="text-gray-700 mb-4 text-left">"Processo super tranquilo e transparente. Consegui realizar o sonho da casa própria!"</p>
+          <p class="font-bold text-gray-800 text-left">Maria Silva</p>
+          <div class="card-bg-shape"></div>
+        </div>
+
+        <!-- Depoimento 2 -->
+        <div class="glass-card p-6 relative overflow-hidden rounded-lg shadow-lg hover-effect">
+          <div class="text-yellow-400 mb-4 text-left">
+            ★★★★★
+          </div>
+          <p class="text-gray-700 mb-4 text-left">"Atendimento excepcional e condições que cabem no bolso. Recomendo!"</p>
+          <p class="font-bold text-gray-800 text-left">João Santos</p>
+          <div class="card-bg-shape"></div>
+        </div>
+
+        <!-- Depoimento 3 -->
+        <div class="glass-card p-6 relative overflow-hidden rounded-lg shadow-lg hover-effect">
+          <div class="text-yellow-400 mb-4 text-left">
+            ★★★★★
+          </div>
+          <p class="text-gray-700 mb-4 text-left">"A melhor decisão que tomei. Equipe muito profissional e dedicada."</p>
+          <p class="font-bold text-gray-800 text-left">Ana Oliveira</p>
+          <div class="card-bg-shape"></div>
+        </div>
+      </div>
+    </div>
+    <div class="absolute top-0 left-0 -mt-16 -ml-16 w-64 h-64 rounded-full bg-blue-100 opacity-30"></div>
+    <div class="absolute bottom-0 right-0 -mb-20 -mr-20 w-80 h-80 rounded-full bg-teal-100 opacity-40"></div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <!-- Coluna 1 - Logo e Descrição -->
+        <div>
+          <img src="logo-white.png" alt="LogosCor Consórcios e Seguros - Realize seus sonhos com segurança" class="footer-logo">
+       
+        </div>
+
+        <!-- Coluna 2 - Links Rápidos -->
+        <div>
+          <h4 class="text-lg font-bold mb-4">Links Rápidos</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white">Sobre Nós</a></li>
+            <li><a href="#como-funciona" class="text-gray-400 hover:text-white">Como Funciona</a></li>
+            <li><a href="https://wa.me/556230153001?text=OLá%20vindo%20direto%20no%20site,%20Preciso%20de%20um%20atendimento!" class="text-gray-400 hover:text-white">Contato</a></li>
+          </ul>
+        </div>
+
+        <!-- Coluna 3 - Contato -->
+        <div>
+          <h4 class="text-lg font-bold mb-4">Contato</h4>
+          <ul class="space-y-2">
+            <li class="text-gray-400"><i class="fas fa-phone mr-2"></i><a href="https://wa.me/556230153001?text=OLá%20vindo%20direto%20no%20site,%20Preciso%20de%20um%20atendimento!" class="hover:text-white">Direto no WhatsApp</a></li>
+            <li class="text-gray-400"><i class="fas fa-envelope mr-2"></i>contato@logoscor.com.br</li>
+            <li class="text-gray-400"><i class="fas fa-map-marker-alt mr-2"></i>Goiânia, GO</li>
+          </ul>
+        </div>
+
+        <!-- Coluna 4 - Redes Sociais -->
+        <div>
+          <h4 class="text-lg font-bold mb-4">Siga-nos</h4>
+          <div class="flex space-x-4">
+            <a href="https://www.instagram.com/logoscor/" class="text-gray-400 hover:text-white text-2xl"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/alinealvescorretora/" class="text-gray-400 hover:text-white text-2xl"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.instagram.com/viverconsorcio/" class="text-gray-400 hover:text-white text-2xl"><i class="fab fa-linkedin"></i></a>
+            
+          </div>
+          <p class="footer-description">Viver seguro é bom de mais.</p>
+        </div>
+      </div>
+
+      <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+        <p>&copy; 2025 Logos Consórcios e Seguros. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="scriptEmails.js"></script>
+  <script type="text/javascript">
+    // Inicialização do ajuste de títulos
+    window.addEventListener('load', adjustTitleFontSize);
+    window.addEventListener('resize', debounce(adjustTitleFontSize, 100));
+    window.addEventListener('orientationchange', adjustTitleFontSize);
+  </script>
+
+</body>
+</html>
