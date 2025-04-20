@@ -337,7 +337,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const logoImg = logoWrapper.querySelector('img');
         if (logoImg) {
             // Garantir que o caminho da logo esteja correto
-            logoImg.src = 'logo.png';
+            logoImg.src = 'Logo.png';
             logoImg.alt = 'LogosCor Consorcio e Seguros';
         }
     }
