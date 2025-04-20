@@ -21,6 +21,7 @@ header.container {
   justify-content: space-between;
   align-items: center;
 }
+
 .nav {
   margin-left: auto;
 }
@@ -1032,13 +1033,22 @@ section + section {
 }
 
 /* Adicione esta media query para dispositivos móveis */
-@media (max-width: 768px) {
+@media (max-width: 768px) and (max-width: 884px) {
   .footer-logo {
     height: 240px;
     margin-top: -40px;
     margin-bottom: -40px;
   }
-  
+  .nav-list {
+    margin-top: 10px;
+    margin-right: 0;
+    display: none; /* Oculta o botão no header em tablet */
+}
+
+.mobile-consorcio-btn {
+    display: block; /* Mostra o botão no final do formulário em tablet */
+    margin-top: 2.5rem;
+}
   /* Reduz o padding do footer para dispositivos móveis */
   .footer {
     padding: 2rem 0;
