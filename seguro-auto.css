@@ -615,3 +615,159 @@ footer ul li a {
 footer ul li a:hover {
   color: #ffffff !important;
 }
+
+/* Ajustes específicos para o footer em dispositivos móveis */
+@media (max-width: 768px) {
+  /* Configuração do grid como coluna */
+  footer .grid {
+    gap: 1rem; /* Reduzido o espaçamento entre elementos */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Centralização da logo */
+  footer .footer-logo {
+    max-width: 220px;
+    margin: 0 auto 0.5rem; /* Reduzido margin-bottom */
+    display: block;
+  }
+  
+  /* Alinhamento dos títulos à esquerda */
+  footer h4 {
+    text-align: left; /* Alinhado à esquerda */
+    margin-top: 0.25rem; /* Reduzido */
+    margin-bottom: 0.25rem; /* Reduzido */
+    padding-left: 1rem; /* Adicionado padding à esquerda */
+  }
+  
+  /* Alinhamento das listas à esquerda */
+  footer ul {
+    text-align: left; /* Alinhado à esquerda */
+    padding-left: 1rem; /* Adicionado padding à esquerda */
+  }
+  
+  /* Alinhamento dos ícones de redes sociais */
+  footer .flex {
+    justify-content: flex-start; /* Alinhado à esquerda */
+    padding-left: 1rem; /* Adicionado padding à esquerda */
+  }
+  
+  /* Alinhamento da descrição do footer */
+  footer .footer-description {
+    text-align: left; /* Alinhado à esquerda */
+    padding-left: 1rem; /* Adicionado padding à esquerda */
+    margin-top: 0.5rem; /* Reduzido */
+  }
+  
+  /* Ajuste da seção de copyright */
+  footer .pt-8 {
+    margin-top: 0.5rem; /* Reduzido */
+  }
+  
+  /* Ajustes para tamanho de fonte dos títulos */
+  footer .text-lg {
+    font-size: 1rem;
+    display: block;
+    margin-bottom: 0.25rem; /* Reduzido */
+  }
+  
+  /* Redução do espaçamento entre itens da lista */
+  footer .space-y-2 > * {
+    margin-top: 0 !important;
+    margin-bottom: 0.25rem; /* Reduzido */
+  }
+  
+  /* Ajuste do layout do grid */
+  footer .grid-cols-1 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinhado à esquerda */
+  }
+  
+  /* Ajuste de cada seção do footer */
+  footer .grid-cols-1 > div {
+    width: 100%;
+    text-align: left; /* Alinhado à esquerda */
+    margin-bottom: 0.75rem; /* Reduzido */
+  }
+  
+  /* Ajuste da borda superior da seção de copyright */
+  footer .border-t {
+    margin-top: 0.5rem; /* Reduzido */
+    padding-top: 0.5rem; /* Reduzido */
+  }
+  
+  /* Forçar elementos a ficarem um abaixo do outro */
+  footer .md\:grid-cols-4 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Redução do padding vertical do footer */
+  footer.py-12 {
+    padding-top: 1.5rem; /* Reduzido */
+    padding-bottom: 1.5rem; /* Reduzido */
+  }
+  
+  /* Centralização apenas da primeira div (logo) */
+  footer .grid-cols-1 > div:first-child {
+    text-align: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* Ajustes para telas muito pequenas */
+@media (max-width: 480px) {
+  /* Redução adicional de padding */
+  .py-12 {
+    padding-top: 1rem; /* Reduzido ainda mais */
+    padding-bottom: 1rem; /* Reduzido ainda mais */
+  }
+  
+  /* Redução do espaçamento entre elementos */
+  footer .grid {
+    gap: 0.5rem; /* Reduzido ainda mais */
+  }
+  
+  /* Ajuste dos títulos */
+  footer h4 {
+    font-size: 0.95rem;
+    margin-top: 0.15rem; /* Reduzido ainda mais */
+    margin-bottom: 0.15rem; /* Reduzido ainda mais */
+  }
+  
+  /* Ajuste do tamanho dos ícones */
+  footer .text-2xl {
+    font-size: 1.25rem;
+  }
+  
+  /* Redução do espaçamento entre itens da lista */
+  footer .space-y-2 > * {
+    margin-bottom: 0.25rem; /* Reduzido ainda mais */
+  }
+  
+  /* Redução do tamanho da fonte */
+  footer ul li, footer .text-gray-400 {
+    font-size: 0.9rem;
+  }
+  
+  /* Redução do tamanho da logo */
+  footer .footer-logo {
+    max-width: 280px;
+    margin-top: -5rem;
+    margin-bottom: -9rem;
+  }
+  
+  /* Ajuste do texto de copyright */
+  footer .border-t p {
+    font-size: 0.8rem;
+    padding: 0 0.5rem; /* Reduzido o padding horizontal */
+  }
+  
+  /* Redução do padding horizontal */
+  footer .px-4 {
+    padding-left: 0.5rem; /* Reduzido */
+    padding-right: 0.5rem; /* Reduzido */
+  }
+}
