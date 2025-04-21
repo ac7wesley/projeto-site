@@ -771,3 +771,33 @@ footer ul li a:hover {
     padding-right: 0.5rem; /* Reduzido */
   }
 }
+
+#seguroAutoEtapa1, #seguroAutoEtapa2 {
+    transition: all 0.3s ease;
+}
+
+.btn-avancar {
+    margin: 20px 0;
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1em;
+}
+
+/* Indicador de progresso */
+.progress-indicator {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.step {
+    padding: 8px 16px;
+    margin: 0 10px;
+    border-radius: 20px;
+    background: #f0f0f0;
+}
+
+.step.active {
+    background: #007bff;
+    color: white;
+}

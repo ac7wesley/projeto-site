@@ -58,10 +58,23 @@
                     <meta itemprop="name" content="LogosCor Consórcio e Seguros">
                     <meta itemprop="description" content="Empresa especializada em seguros auto e consórcios com as melhores condições do mercado.">
                     
-                    <form id="seguroAutoForm" onsubmit="return validarFormulario()">
+                    <form id="seguroAutoEtapa1" onsubmit="return validarFormulario()">
                         <!-- Seção de Informações do Condutor -->
                         <div class="form-section">
                             <h2>Informações do Condutor</h2>
+                            
+                            <!-- Campos de Nome e Telefone -->
+                            <div class="form-group">
+                                <label for="nomeCondutor">Nome completo:</label>
+                                <input type="text" id="nomeCondutor" name="nomeCondutor" class="form-control" placeholder="Digite seu nome completo">
+                                <div id="nomeCondutorError" class="error-message">Campo obrigatório</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="telefoneCondutor">Telefone:</label>
+                                <input type="tel" id="telefoneCondutor" name="telefoneCondutor" class="form-control" placeholder="(00) 00000-0000" maxlength="15">
+                                <div id="telefoneCondutorError" class="error-message">Telefone inválido</div>
+                            </div>
                             
                             <!-- Resto do conteúdo da seção permanece igual -->
                             <div class="form-group">
@@ -244,8 +257,14 @@
                                 </div>
                             </div>
                         </div>
+                        <button type="button" onclick="seguroAutoEtapa1()" class="btn btn-primary w-100 btn-avancar">
+                            <i class="fas fa-arrow-right-to-bracket"></i> Avançar
+                          </button>
+                        </form>
+
                         
                         <!-- Seção de Uso do Veículo -->
+                        <form id="seguroAutoEtapa2" onsubmit="return validarFormulario()">
                         <div class="form-section">
                             <h2>Uso do Veículo</h2>
                             
@@ -443,7 +462,7 @@
                         
                         <!-- Botão de Envio -->
                         <div class="text-center">
-                            <button type="submit" class="btn-primary" id="enviarFormulario">
+                            <button type="button" class="btn-primary" id="enviarFormulario" onclick="seguroAutoEtapa2(); return false;">
                                 <i class="fas fa-paper-plane"></i> Enviar Cotação
                             </button>
                         </div>
@@ -511,7 +530,7 @@
   </footer>
 
     <!-- Incluir os arquivos JavaScript externos -->
-    <script src="seguro-auto.js"></script>
-    <script src="envia-seguro-auto.js"></script>
+    <script src="seguro-auto.js" defer></script>
+    <script src="enviaSeguroAuto.js" defer></script>
 </body>
 </html>
