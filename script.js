@@ -160,59 +160,119 @@ function validarEtapa1() {
   }
 }
 
-// Função para validar a Etapa 2
+// Função para validar a etapa 2
+/**
+ * Envia os dados do formulário para um webhook
+ * @param {Object} dados - Dados do formulário
+ */
+function enviarParaWebhook(dados) {
+    // Verificar se CONFIG está definido
+    if (!CONFIG || !CONFIG.webhookUrl) {
+        console.error("Erro: CONFIG ou webhookUrl não definidos!");
+        return;
+    }
+    
+    // Usar a URL do webhook da configuração
+    const webhookUrl = CONFIG.webhookUrl;
+    
+    console.log("Iniciando envio para webhook:", webhookUrl);
+    console.log("Dados a serem enviados:", dados);
+    
+    // Criar cópia dos dados para não interferir com o objeto original
+    const dadosWebhook = { ...dados };
+    
+    // Adicionar timestamp e origem
+    dadosWebhook.timestamp = new Date().toISOString();
+    dadosWebhook.origem_sistema = "site-consorcio";
+    dadosWebhook.tipo_lead = "consorcio";
+    
+    // Verificar se há dados vazios e substituir por valores padrão
+    Object.keys(dadosWebhook).forEach(key => {
+        if (dadosWebhook[key] === undefined || dadosWebhook[key] === null || dadosWebhook[key] === '') {
+            dadosWebhook[key] = key.includes('valor') ? '0' : 'Não informado';
+        }
+    });
+    
+    console.log("Dados finais a serem enviados para webhook:", dadosWebhook);
+    
+    // Enviar dados para o webhook
+    fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(dadosWebhook)
+    })
+    .then(response => {
+        console.log("Resposta recebida do webhook - Status:", response.status);
+        if (!response.ok) {
+            console.error("Erro no envio para webhook:", response.status, response.statusText);
+        } else {
+            console.log("Dados enviados com sucesso para o webhook");
+        }
+        return response.text();
+    })
+    .then(data => {
+        console.log("Resposta completa do webhook:", data);
+    })
+    .catch(error => {
+        console.error("Erro ao enviar para webhook:", error);
+    });
+}
+
+// Função para validar e processar a etapa 2
 function validarEtapa2() {
-  // Obter valores dos campos
+  // Obter todos os campos do formulário
   const objetivo = document.getElementById('objetivo').value;
   const credito = document.getElementById('credito').value;
   const parcela = document.getElementById('parcela').value;
   const profissao = document.getElementById('profissao').value;
   const origem = document.getElementById('origem').value;
-  const outroOrigem = document.getElementById('outroOrigem').value;
-
+  
   // Validar campos
   let isValid = true;
   
   if (!objetivo) {
-    mostrarErro('objetivoError');
-    isValid = false;
+  mostrarErro('objetivoError');
+  isValid = false;
   } else {
-    ocultarErro('objetivoError');
+  ocultarErro('objetivoError');
   }
 
   if (!credito || credito === "0") {
-    mostrarErro('creditoError');
-    isValid = false;
+  mostrarErro('creditoError');
+  isValid = false;
   } else {
-    ocultarErro('creditoError');
+  ocultarErro('creditoError');
   }
 
   if (!parcela || parcela === "0") {
-    mostrarErro('parcelaError');
-    isValid = false;
+  mostrarErro('parcelaError');
+  isValid = false;
   } else {
-    ocultarErro('parcelaError');
+  ocultarErro('parcelaError');
   }
 
   if (!profissao) {
-    mostrarErro('profissaoError');
-    isValid = false;
-    } else {
-    ocultarErro('profissaoError');
+  mostrarErro('profissaoError');
+  isValid = false;
+  } else {
+  ocultarErro('profissaoError');
   }
 
   if (!origem) {
-    mostrarErro('origemError');
-    isValid = false;
-    } else {
-    ocultarErro('origemError');
+  mostrarErro('origemError');
+  isValid = false;
+  } else {
+  ocultarErro('origemError');
   }
 
   if (origem === 'Outro' && !outroOrigem) {
-    mostrarErro('outroOrigemError');
-    isValid = false;
+  mostrarErro('outroOrigemError');
+  isValid = false;
   } else {
-    ocultarErro('outroOrigemError');
+  ocultarErro('outroOrigemError');
   }
 
   if (isValid) {
@@ -224,11 +284,38 @@ function validarEtapa2() {
     const cidade = document.getElementById('cidade').value;
     const estado = document.getElementById('estado').value;
 
-    // Formatar valores monetários
+    // Formatar valores monetários para exibição
     const creditoFormatado = formatarMoeda(credito);
     const parcelaFormatada = formatarMoeda(parcela);
 
-    // Montar mensagem
+    // Coletar todos os dados para enviar ao webhook
+    const dadosCompletos = {
+      // Dados pessoais
+      nome: nome,
+      email: email,
+      telefone: telefone,
+      idade: idade,
+      cidade: cidade,
+      estado: estado,
+      
+      // Dados da simulação
+      objetivo: objetivo,
+      credito: credito,
+      creditoFormatado: creditoFormatado,
+      parcela: parcela,
+      parcelaFormatada: parcelaFormatada,
+      profissao: profissao,
+      origem: origem === 'Outro' && document.getElementById('outroOrigem') ? 
+              document.getElementById('outroOrigem').value : 
+              origem
+    };
+    
+    // Enviar dados para o webhook - IMPORTANTE: Garantir que esta linha seja executada
+    log("Enviando dados do formulário para webhook", 'info', dadosCompletos);
+    enviarParaWebhook(dadosCompletos);
+    
+    // Continuar com o fluxo normal (envio de email e WhatsApp)
+    // Montar mensagem para WhatsApp
     const mensagem = `Olá, tenho interesse em um consórcio!
 
 *Dados Pessoais*
@@ -243,10 +330,10 @@ Objetivo: ${objetivo}
 Crédito desejado: ${creditoFormatado}
 Valor ideal de Parcela: ${parcelaFormatada}
 Profissão: ${profissao}
-Como nos conheceu: ${origem === 'Outro' ? outroOrigem : origem}`;
+Como nos conheceu: ${origem === 'Outro' ? document.getElementById('outroOrigem').value : origem}`;
 
-    // Enviar email
-    enviarEmailAutomatico({ nome, email, telefone, idade, cidade, estado }, { objetivo, credito, parcela, profissao, origem, outroOrigem });
+    // Enviar email (continuar com o fluxo existente)
+    enviarEmailAutomatico({ nome, email, telefone, idade, cidade, estado }, { objetivo, credito, parcela, profissao, origem, outroOrigem: origem === 'Outro' ? document.getElementById('outroOrigem').value : '' });
 
     // Mostrar confirmação
     document.getElementById('formEtapa2').classList.add('hidden');
@@ -460,12 +547,15 @@ function enviarWhatsApp(dadosPessoais, dadosSimulacao) {
       `Como nos conheceu: ${dadosSimulacao.origem}`;
 
     // Construir a URL do WhatsApp com a mensagem
-    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${mensagem}`;
+    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${mensagem}`, target="_blank";
     log("URL do WhatsApp gerada", 'info');
     
     // Abrir o WhatsApp na mesma janela
     log("Tentando abrir WhatsApp na mesma janela...", 'info');
     window.location.href = whatsappUrl;
+   // window.open(whatsappUrl, '_blank'); // Abre em uma nova aba
+   // window.location.href = whatsappUrl; // Abre em uma nova aba e redireciona para o WhatsApp
+   // window.open(whatsappUrl, '_self'); // Abre em uma nova aba e redireciona para o WhatsApp
     
   } catch (e) {
     log("Erro ao tentar abrir WhatsApp", 'erro', e);
@@ -663,5 +753,70 @@ function ocultarErro(elementId) {
     }
   }
 }
-//--------------------------------------------------------------------------------------------
+
+/**
+ * Função para testar o webhook diretamente
+ */
+function testarWebhook() {
+  console.log("Iniciando teste do webhook...");
+  
+  // URL do webhook
+  const webhookUrl = CONFIG.webhookUrl;
+  console.log("URL do webhook:", webhookUrl);
+  
+  // Dados de teste
+  const dadosTeste = {
+    teste: true,
+    timestamp: new Date().toISOString(),
+    mensagem: "Teste de conexão com webhook",
+    origem: "teste-manual"
+  };
+  
+  // Mostrar indicador
+  const statusElement = document.getElementById('webhookStatus');
+  if (statusElement) {
+    statusElement.innerHTML = '<span style="color: orange;"><i class="fas fa-spinner fa-spin"></i> Testando conexão...</span>';
+  }
+  
+  // Enviar requisição de teste
+  fetch(webhookUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify(dadosTeste)
+  })
+  .then(response => {
+    console.log("Resposta do webhook - Status:", response.status);
+    
+    if (statusElement) {
+      if (response.ok) {
+        statusElement.innerHTML = '<span style="color: green;"><i class="fas fa-check-circle"></i> Conexão bem-sucedida!</span>';
+      } else {
+        statusElement.innerHTML = `<span style="color: red;"><i class="fas fa-times-circle"></i> Erro: ${response.status} ${response.statusText}</span>`;
+      }
+    }
+    
+    return response.text();
+  })
+  .then(data => {
+    console.log("Resposta completa do webhook:", data);
+  })
+  .catch(error => {
+    console.error("Erro ao testar webhook:", error);
+    
+    if (statusElement) {
+      statusElement.innerHTML = `<span style="color: red;"><i class="fas fa-times-circle"></i> Erro: ${error.message}</span>`;
+    }
+  });
+}
+
+// Verificar se o CONFIG está carregado corretamente
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("Configuração carregada - URL do webhook:", CONFIG.webhookUrl);
+    
+    // Remover os botões de teste para ambiente de produção
+    // O código para adicionar botões de teste foi removido
+});
           

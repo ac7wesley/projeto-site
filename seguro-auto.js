@@ -387,49 +387,60 @@ function seguroAutoEtapa2() {
     
     if (validarEtapa2()) {
         try {
-            // Forçar rolagem para o topo da página de várias maneiras
-            document.body.scrollTop = 0; // Para navegadores mais antigos
-            document.documentElement.scrollTop = 0; // Para navegadores modernos
-            window.scrollTo(0, 0); // Para todos os navegadores
-            // Rolar para o topo da página antes de processar
-            window.scrollTo({
-                top: 0,
-                left: 0,
-                behavior: 'auto'
-            });
+            // Forçar rolagem para o topo da página
+            rolarParaTopo();
             
             // Pequeno atraso para garantir que a rolagem ocorra antes do processamento
             setTimeout(() => {
                 // Coletar todos os dados do formulário
                 const dados = coletarDadosFormulario();
                 
-                // Enviar dados para o Google Sheets e depois para o WhatsApp
-                enviarDadosCompletos(dados)
-                    .then(sucesso => {
-                        // Corrigido: removida a referência à variável 'resposta' que não existe
-                        console.log('Resposta do processamento:', sucesso);
-                        if (sucesso) {
-                            // Enviar dados para o WhatsApp
-                            enviarParaWhatsApp(dados);
+                // Log para debug
+                console.log("Dados coletados para envio:", dados);
+                
+                // Enviar dados para webhook e continuar com o fluxo
+                try {
+                    // Enviar para webhook primeiro
+                    enviarSeguroParaWebhook(dados);
+                    
+                    // Continuar com o processamento normal
+                    processarEnvioFormulario(dados)
+                        .then(sucesso => {
+                            console.log('Resposta do processamento:', sucesso);
+                            if (sucesso) {
+                                // Enviar dados para o WhatsApp
+                                enviarParaWhatsApp(dados);
+                                
+                                // Exibir mensagem de sucesso
+                                exibirAlerta('Sua cotação foi enviada com sucesso! Você será redirecionado para o WhatsApp.', 'success');
+                            }
                             
-                            // Exibir mensagem de sucesso
-                            exibirAlerta('Sua cotação foi enviada com sucesso! Você será redirecionado para o WhatsApp.', 'success');
-                            
-                            // Redirecionar para a página inicial após alguns segundos
-                            //setTimeout(() => {
-                            //    window.location.href = 'seguro-auto.html';
-                            //}, 2000);
-                        }
-                        
-                        // Liberar o processamento
-                        window.processandoEnvio = false;
-                    })
-                    .catch(erro => {
-                        console.error("Erro ao processar envio:", erro);
-                        exibirAlerta('Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.', 'error');
-                        window.processandoEnvio = false;
-                    });
-            }, 500); // Atraso para garantir que a rolagem seja concluída
+                            // Liberar o processamento
+                            window.processandoEnvio = false;
+                        })
+                        .catch(erro => {
+                            console.error("Erro ao processar envio:", erro);
+                            exibirAlerta('Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.', 'error');
+                            window.processandoEnvio = false;
+                        });
+                } catch (error) {
+                    console.error("Erro ao enviar para webhook:", error);
+                    // Continuar mesmo com erro no webhook
+                    processarEnvioFormulario(dados)
+                        .then(sucesso => {
+                            if (sucesso) {
+                                enviarParaWhatsApp(dados);
+                                exibirAlerta('Sua cotação foi enviada com sucesso! Você será redirecionado para o WhatsApp.', 'success');
+                            }
+                            window.processandoEnvio = false;
+                        })
+                        .catch(erro => {
+                            console.error("Erro ao processar envio:", erro);
+                            exibirAlerta('Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.', 'error');
+                            window.processandoEnvio = false;
+                        });
+                }
+            }, 500);
         } catch (error) {
             console.error("Erro ao processar envio:", error);
             exibirAlerta('Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.', 'error');
@@ -441,20 +452,53 @@ function seguroAutoEtapa2() {
     
     return false;
 }
-//----------------------------------------------------------------------------
-// Função para enviar dados completos (para substituir enviarDadosCompletos)
-function enviarDadosCompletos(dados) {
-    return processarEnvioFormulario(dados)
-        .then(resposta => {
-            console.log('Dados enviados com sucesso:', resposta);
-            return true;
-        })
-        .catch(erro => {
-            console.error('Erro ao enviar dados:', erro);
-            exibirAlerta('Ocorreu um erro ao enviar os dados. Por favor, tente novamente.', 'error');
-            return false;
-        });
+
+/**
+ * Envia os dados do formulário de seguro auto para o webhook
+ * @param {Object} dados - Dados do formulário
+ */
+function enviarSeguroParaWebhook(dados) {
+    // URL do webhook para seguro auto
+    const webhookUrl = "https://instwesley-n8n.r1negz.easypanel.host/webhook/lead-auto";
+    
+    console.log("Iniciando envio para webhook de seguro auto:", webhookUrl);
+    
+    // Criar cópia dos dados para não interferir com o objeto original
+    const dadosWebhook = { ...dados };
+    
+    // Adicionar timestamp e origem
+    dadosWebhook.timestamp = new Date().toISOString();
+    dadosWebhook.origem_sistema = "site-seguro-auto";
+    dadosWebhook.tipo_lead = "seguro-auto";
+    
+    console.log("Dados a serem enviados para webhook:", dadosWebhook);
+    
+    // Enviar dados para o webhook sem esperar resposta
+    fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(dadosWebhook)
+    })
+    .then(response => {
+        console.log("Resposta recebida do webhook - Status:", response.status);
+        if (!response.ok) {
+            console.error("Erro no envio para webhook:", response.status, response.statusText);
+        } else {
+            console.log("Dados enviados com sucesso para o webhook");
+        }
+        return response.text();
+    })
+    .then(data => {
+        console.log("Resposta completa do webhook:", data);
+    })
+    .catch(error => {
+        console.error("Erro ao enviar para webhook:", error);
+    });
 }
+
 //----------------------------------------------------------------------------
 // Função auxiliar para garantir rolagem ao topo
 function rolarParaTopo() {

@@ -344,15 +344,20 @@ function ocultarCarregamento() {
  * @param {Object} dados - Dados do formulário
  */
 function enviarDadosCompletos(dados) {
-    // Primeiro enviar para a planilha
+    // Enviar dados para o webhook primeiro
+    enviarSeguroParaWebhook(dados);
+    
+    // Depois enviar para a planilha
     return processarEnvioFormulario(dados)
         .then(() => {
             // Depois enviar para o WhatsApp (se necessário)
             // Esta função deve ser chamada no lugar da função enviarParaWhatsApp no seguro-auto.js
+            console.log("Dados enviados com sucesso para planilha e webhook");
             return true;
         })
         .catch(erro => {
             // Exibir mensagem de erro
+            console.error("Erro ao enviar dados para planilha:", erro);
             alert('Ocorreu um erro ao salvar os dados: ' + erro.message);
             return false;
         });
@@ -360,3 +365,289 @@ function enviarDadosCompletos(dados) {
 
 // Exportar as funções para uso global
 window.enviarDadosCompletos = enviarDadosCompletos;
+window.enviarSeguroParaWebhook = enviarSeguroParaWebhook;
+
+
+/**
+ * Configurações para o envio de dados do seguro auto
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("Carregando configurações para seguro auto...");
+});
+
+/**
+ * Envia os dados do formulário de seguro auto para o webhook
+ * @param {Object} dados - Dados do formulário
+ */
+function enviarSeguroParaWebhook(dados) {
+    // URL do webhook para seguro auto
+    const webhookUrl = CONFIG.webhookUrl || "https://instwesley-n8n.r1negz.easypanel.host/webhook/lead-auto";
+    
+    console.log("Iniciando envio para webhook de seguro auto:", webhookUrl);
+    
+    // Criar cópia dos dados para não interferir com o objeto original
+    const dadosWebhook = { ...dados };
+    
+    // Adicionar timestamp e origem
+    dadosWebhook.timestamp = new Date().toISOString();
+    dadosWebhook.origem_sistema = "site-seguro-auto";
+    dadosWebhook.tipo_lead = "seguro-auto";
+    
+    console.log("Dados a serem enviados para webhook:", dadosWebhook);
+    
+    // Enviar dados para o webhook
+    fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(dadosWebhook)
+    })
+    .then(response => {
+        console.log("Resposta recebida do webhook - Status:", response.status);
+        if (!response.ok) {
+            console.error("Erro no envio para webhook:", response.status, response.statusText);
+        } else {
+            console.log("Dados enviados com sucesso para o webhook");
+        }
+        return response.text();
+    })
+    .then(data => {
+        console.log("Resposta completa do webhook:", data);
+    })
+    .catch(error => {
+        console.error("Erro ao enviar para webhook:", error);
+    });
+}
+
+/**
+ * Coleta todos os dados do formulário de seguro auto
+ * @returns {Object} Dados do formulário
+ */
+function coletarDadosSeguroAuto() {
+    // Dados do condutor
+    const nomeCondutor = document.getElementById('nomeCondutor')?.value || '';
+    const telefoneCondutor = document.getElementById('telefoneCondutor')?.value || '';
+    const cep = document.getElementById('cep')?.value || '';
+    const tipoResidencia = document.querySelector('input[name="tipoResidencia"]:checked')?.value || '';
+    const garagemResidencia = document.querySelector('input[name="garagemResidencia"]:checked')?.value || '';
+    const tipoPortao = document.querySelector('input[name="tipoPortao"]:checked')?.value || '';
+    const garagemEstudos = document.querySelector('input[name="garagemEstudos"]:checked')?.value || '';
+    const garagemTrabalho = document.querySelector('input[name="garagemTrabalho"]:checked')?.value || '';
+    const distanciaTrabalho = document.getElementById('distanciaTrabalho')?.value || '';
+    const condutorJovem = document.querySelector('input[name="condutorJovem"]:checked')?.value || '';
+    const idadeCondutorJovem = document.getElementById('idadeCondutorJovem')?.value || '';
+    const sexoCondutorJovem = document.querySelector('input[name="sexoCondutorJovem"]:checked')?.value || '';
+    const estadoCivil = document.getElementById('estadoCivil')?.value || '';
+    const profissao = document.getElementById('profissao')?.value || '';
+    const temFilhos = document.querySelector('input[name="temFilhos"]:checked')?.value || '';
+    const idadeFilhos = document.getElementById('idadeFilhos')?.value || '';
+    
+    // Dados do uso do veículo
+    const usoVeiculo = document.querySelector('input[name="usoVeiculo"]:checked')?.value || '';
+    
+    // Dados do veículo
+    const marcaVeiculo = document.getElementById('marcaVeiculo')?.value || '';
+    const modeloVeiculo = document.getElementById('modeloVeiculo')?.value || '';
+    const anoVeiculo = document.getElementById('anoVeiculo')?.value || '';
+    const combustivel = document.querySelector('input[name="combustivel"]:checked')?.value || '';
+    const placaVeiculo = document.getElementById('placaVeiculo')?.value || '';
+    const chassiVeiculo = document.getElementById('chassiVeiculo')?.value || '';
+    const possuiBlindagem = document.querySelector('input[name="possuiBlindagem"]:checked')?.value || '';
+    const possuiKitGas = document.querySelector('input[name="possuiKitGas"]:checked')?.value || '';
+    
+    // Dados do seguro
+    const tipoSeguro = document.querySelector('input[name="tipoSeguro"]:checked')?.value || '';
+    const bonusAtual = document.getElementById('bonusAtual')?.value || '';
+    const seguradoraAtual = document.getElementById('seguradoraAtual')?.value || '';
+    const vigenciaAtual = document.getElementById('vigenciaAtual')?.value || '';
+    const teveSinistro = document.querySelector('input[name="teveSinistro"]:checked')?.value || '';
+    
+    return {
+        // Dados do condutor
+        nomeCondutor,
+        telefoneCondutor,
+        cep,
+        tipoResidencia,
+        garagemResidencia,
+        tipoPortao,
+        garagemEstudos,
+        garagemTrabalho,
+        distanciaTrabalho,
+        condutorJovem,
+        idadeCondutorJovem,
+        sexoCondutorJovem,
+        estadoCivil,
+        profissao,
+        temFilhos,
+        idadeFilhos,
+        
+        // Dados do uso do veículo
+        usoVeiculo,
+        
+        // Dados do veículo
+        marcaVeiculo,
+        modeloVeiculo,
+        anoVeiculo,
+        combustivel,
+        placaVeiculo,
+        chassiVeiculo,
+        possuiBlindagem,
+        possuiKitGas,
+        
+        // Dados do seguro
+        tipoSeguro,
+        bonusAtual,
+        seguradoraAtual,
+        vigenciaAtual,
+        teveSinistro
+    };
+}
+
+/**
+ * Função de teste para verificar o envio para o webhook
+ * Esta função pode ser chamada diretamente do console para testar o envio
+ */
+function testarEnvioWebhook() {
+    console.log("Iniciando teste de envio para webhook...");
+    
+    // Dados de teste
+    const dadosTeste = {
+        nomeCondutor: "Teste Webhook",
+        telefone: "11999999999",
+        cep: "12345678",
+        tipoResidencia: "Casa",
+        marcaVeiculo: "Toyota",
+        modeloVeiculo: "Corolla",
+        anoVeiculo: "2022"
+    };
+    
+    // Adicionar timestamp para diferenciar os testes
+    dadosTeste.timestamp_teste = new Date().toISOString();
+    
+    console.log("Dados de teste:", dadosTeste);
+    
+    // Tentar enviar para o webhook
+    const webhookUrl = "https://instwesley-n8n.r1negz.easypanel.host/webhook/lead-auto";
+    
+    // Criar elemento visual para mostrar o status do teste
+    const testeStatus = document.createElement('div');
+    testeStatus.style.position = 'fixed';
+    testeStatus.style.top = '50%';
+    testeStatus.style.left = '50%';
+    testeStatus.style.transform = 'translate(-50%, -50%)';
+    testeStatus.style.padding = '20px';
+    testeStatus.style.backgroundColor = '#f8f9fa';
+    testeStatus.style.border = '1px solid #dee2e6';
+    testeStatus.style.borderRadius = '5px';
+    testeStatus.style.boxShadow = '0 0 10px rgba(0,0,0,0.1)';
+    testeStatus.style.zIndex = '9999';
+    testeStatus.style.maxWidth = '80%';
+    testeStatus.style.width = '400px';
+    testeStatus.style.textAlign = 'center';
+    
+    testeStatus.innerHTML = `
+        <h3>Teste de Envio para Webhook</h3>
+        <p>Enviando dados para: ${webhookUrl}</p>
+        <div id="teste-status-mensagem">Enviando...</div>
+        <div id="teste-spinner" style="margin: 10px auto; border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 2s linear infinite;"></div>
+        <pre id="teste-resposta" style="margin-top: 10px; text-align: left; max-height: 200px; overflow: auto; background-color: #f5f5f5; padding: 10px; border-radius: 5px; display: none;"></pre>
+        <button id="teste-fechar" style="margin-top: 15px; padding: 5px 15px; background-color: #6c757d; color: white; border: none; border-radius: 3px; cursor: pointer;">Fechar</button>
+    `;
+    
+    document.body.appendChild(testeStatus);
+    
+    // Adicionar estilo de animação
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Adicionar evento ao botão fechar
+    document.getElementById('teste-fechar').addEventListener('click', function() {
+        document.body.removeChild(testeStatus);
+    });
+    
+    // Enviar dados para o webhook
+    fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(dadosTeste)
+    })
+    .then(response => {
+        console.log("Resposta do teste - Status:", response.status);
+        
+        const statusMensagem = document.getElementById('teste-status-mensagem');
+        const testeSpinner = document.getElementById('teste-spinner');
+        const testeResposta = document.getElementById('teste-resposta');
+        
+        if (!response.ok) {
+            statusMensagem.textContent = `Erro: ${response.status} ${response.statusText}`;
+            statusMensagem.style.color = 'red';
+        } else {
+            statusMensagem.textContent = 'Sucesso! Dados enviados.';
+            statusMensagem.style.color = 'green';
+        }
+        
+        testeSpinner.style.display = 'none';
+        testeResposta.style.display = 'block';
+        
+        return response.text();
+    })
+    .then(data => {
+        console.log("Resposta completa do teste:", data);
+        
+        const testeResposta = document.getElementById('teste-resposta');
+        testeResposta.textContent = data || 'Resposta vazia';
+    })
+    .catch(error => {
+        console.error("Erro no teste de envio:", error);
+        
+        const statusMensagem = document.getElementById('teste-status-mensagem');
+        const testeSpinner = document.getElementById('teste-spinner');
+        const testeResposta = document.getElementById('teste-resposta');
+        
+        statusMensagem.textContent = 'Erro ao enviar dados';
+        statusMensagem.style.color = 'red';
+        
+        testeSpinner.style.display = 'none';
+        testeResposta.style.display = 'block';
+        testeResposta.textContent = error.toString();
+    });
+}
+
+// Expor a função para o escopo global para poder ser chamada do console
+window.testarEnvioWebhook = testarEnvioWebhook;
+/*
+// Adicionar botão de teste na página (apenas em ambiente de desenvolvimento)
+if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname.includes('192.168.')) {
+    document.addEventListener('DOMContentLoaded', function() {
+        const botaoTeste = document.createElement('button');
+        botaoTeste.textContent = 'Testar Webhook';
+        botaoTeste.style.position = 'fixed';
+        botaoTeste.style.bottom = '20px';
+        botaoTeste.style.right = '20px';
+        botaoTeste.style.padding = '10px 15px';
+        botaoTeste.style.backgroundColor = '#007bff';
+        botaoTeste.style.color = 'white';
+        botaoTeste.style.border = 'none';
+        botaoTeste.style.borderRadius = '5px';
+        botaoTeste.style.cursor = 'pointer';
+        botaoTeste.style.zIndex = '9999';
+        
+        botaoTeste.addEventListener('click', function() {
+            testarEnvioWebhook();
+        });
+        
+        document.body.appendChild(botaoTeste);
+    });
+}
+*/
