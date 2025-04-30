@@ -654,7 +654,8 @@ function enviarParaWhatsApp(dados) {
     const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${mensagemCodificada}`;
     
     // Abrir o link em uma nova janela
-    window.open(linkWhatsApp, '_blank');
+    //window.open(linkWhatsApp, '_blank');
+    window.location.href = whatsappUrl;
     
 }
     //FIM DESATIVA WHATSAPP NO FORM DE VALIDACOES

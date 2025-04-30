@@ -547,7 +547,7 @@ function enviarWhatsApp(dadosPessoais, dadosSimulacao) {
       `Como nos conheceu: ${dadosSimulacao.origem}`;
 
     // Construir a URL do WhatsApp com a mensagem
-    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${mensagem}`, target="_blank";
+    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${mensagem}`;
     log("URL do WhatsApp gerada", 'info');
     
     // Abrir o WhatsApp na mesma janela
