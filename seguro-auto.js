@@ -655,7 +655,7 @@ function enviarParaWhatsApp(dados) {
     
     // Abrir o link em uma nova janela
     //window.open(linkWhatsApp, '_blank');
-    window.location.href = whatsappUrl;
+    window.location.href = linkWhatsApp;
     
 }
     //FIM DESATIVA WHATSAPP NO FORM DE VALIDACOES
