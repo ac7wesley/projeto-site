@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envio de Vídeo YouTube</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .youtube-form-container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .youtube-form-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        
+        .youtube-form-group {
+            margin-bottom: 25px;
+        }
+        
+        .youtube-form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .youtube-form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .youtube-form-group input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        
+        .youtube-form-submit {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .youtube-form-submit:hover {
+            background-color: #0056b3;
+        }
+        
+        .youtube-form-info {
+            margin-top: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .youtube-preview {
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .youtube-preview iframe {
+            width: 100%;
+            height: 315px;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Conteúdo Principal -->
+    <main>
+        <div class="youtube-form-container">
+            <h2 class="youtube-form-title">Envio de Vídeo do YouTube</h2>
+            <form id="youtubeForm">
+                <div class="youtube-form-group">
+                    <label for="youtubeUrl">URL do Vídeo do YouTube:</label>
+                    <input type="url" id="youtubeUrl" name="youtubeUrl" placeholder="https://www.youtube.com/watch?v=..." required>
+                </div>
+                
+                <div class="youtube-form-group">
+                    <label for="descricao">Descrição (opcional):</label>
+                    <input type="text" id="descricao" name="descricao" placeholder="Breve descrição do vídeo">
+                </div>
+                
+                <div class="youtube-preview" id="youtubePreview">
+                    <h3>Pré-visualização:</h3>
+                    <div id="previewFrame"></div>
+                </div>
+                
+                <button type="submit" class="youtube-form-submit">Enviar Vídeo</button>
+            </form>
+            
+            <div class="youtube-form-info">
+                <p>Cole a URL completa de um vídeo do YouTube para processamento.</p>
+                <p>Formatos aceitos: youtube.com/watch?v=ID ou youtu.be/ID</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="youtube-form.js"></script>
+</body>
+</html>
