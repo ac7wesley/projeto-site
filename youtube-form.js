@@ -13,6 +13,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Função para atualizar placeholders
     function updatePlaceholder() {
         const platform = document.querySelector('input[name="platform"]:checked').value;
+        const contentType = document.querySelector('input[name="contentType"]:checked').value;
+        
+        if (contentType === 'newContext') {
+            contentText.placeholder = 'Digite o novo contexto aqui...';
+            return;
+        }
         
         if (platform === 'youtube') {
             contentUrl.placeholder = 'https://www.youtube.com/watch?v=...';
@@ -23,6 +29,26 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Função para alternar a visibilidade dos campos de entrada
+    function toggleInputFields() {
+        const contentType = document.querySelector('input[name="contentType"]:checked').value;
+        
+        if (contentType === 'link') {
+            linkInput.style.display = 'block';
+            textInput.style.display = 'none';
+            contentUrl.required = true;
+            contentText.required = false;
+        } else {
+            // Tanto para 'text' quanto para 'newContext', mostramos o campo de texto
+            linkInput.style.display = 'none';
+            textInput.style.display = 'block';
+            contentUrl.required = false;
+            contentText.required = true;
+        }
+        
+        updatePlaceholder();
+    }
+
     // Gerenciar mudança de plataforma
     document.querySelectorAll('input[name="platform"]').forEach(radio => {
         radio.addEventListener('change', updatePlaceholder);
@@ -30,24 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Gerenciar mudança de tipo de conteúdo
     document.querySelectorAll('input[name="contentType"]').forEach(radio => {
-        radio.addEventListener('change', function() {
-            const isText = this.value === 'text';
-            linkInput.style.display = isText ? 'none' : 'block';
-            textInput.style.display = isText ? 'block' : 'none';
-            
-            // Remove required de ambos os campos
-            contentUrl.required = false;
-            contentText.required = false;
-            
-            // Adiciona required apenas no campo visível
-            if (isText) {
-                contentText.required = true;
-                contentUrl.value = '';
-            } else {
-                contentUrl.required = true;
-                contentText.value = '';
-            }
-        });
+        radio.addEventListener('change', toggleInputFields);
     });
 
     // Função para validar URL do YouTube
@@ -73,9 +82,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }, { once: true });
     }
 
-    // Evento de envio do formulário
+    // Variável para controlar se um envio está em andamento
+    let isSubmitting = false;
+
+    // Evento de envio do formulário - REMOVIDO LISTENER DUPLICADO
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
+        
+        // Evitar envios múltiplos
+        if (isSubmitting) {
+            console.log('Envio já em andamento, ignorando...');
+            return false;
+        }
+        
+        isSubmitting = true;
         
         const platform = document.querySelector('input[name="platform"]:checked').value;
         const contentType = document.querySelector('input[name="contentType"]:checked').value;
@@ -87,9 +107,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 const url = contentUrl.value.trim();
                 if (platform === 'youtube' && !validateYoutubeUrl(url)) {
                     showError(contentUrl, 'Por favor, insira um link válido do YouTube');
+                    isSubmitting = false;
                     return false;
                 } else if (platform === 'shorts' && !validateShortsUrl(url)) {
                     showError(contentUrl, 'Por favor, insira um link válido do Shorts');
+                    isSubmitting = false;
                     return false;
                 }
                 conteudoParaEnviar = url;
@@ -97,6 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const texto = contentText.value.trim();
                 if (!texto) {
                     showError(contentText, 'O texto não pode estar vazio');
+                    isSubmitting = false;
                     return false;
                 }
                 conteudoParaEnviar = texto;
@@ -117,6 +140,8 @@ document.addEventListener('DOMContentLoaded', function() {
             submitButton.disabled = true;
             submitButton.textContent = 'Enviando...';
 
+            console.log('Enviando dados para o webhook:', dados);
+
             // Enviar para o webhook
             const response = await fetch(WEBHOOK_CONFIG.url, {
                 method: 'POST',
@@ -124,7 +149,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
-                body: JSON.stringify(dados)
+                body: JSON.stringify(dados),
+                // Evitar cache
+                cache: 'no-store'
             });
 
             if (!response.ok) {
@@ -142,10 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             
             // Atualizar placeholders e visibilidade dos campos
-            updatePlaceholder();
-            const isText = document.querySelector('input[name="contentType"]:checked').value === 'text';
-            linkInput.style.display = isText ? 'none' : 'block';
-            textInput.style.display = isText ? 'block' : 'none';
+            toggleInputFields();
 
             alert('Conteúdo enviado com sucesso!');
             
@@ -156,6 +180,22 @@ document.addEventListener('DOMContentLoaded', function() {
             const submitButton = form.querySelector('button[type="submit"]');
             submitButton.disabled = false;
             submitButton.textContent = 'Enviar Conteúdo';
+            isSubmitting = false;
         }
     });
+    
+    // Inicializar os campos corretamente
+    toggleInputFields();
 });
+
+// Função para lidar com o envio do formulário via atributo onsubmit
+function handleFormSubmit(event) {
+    event.preventDefault();
+    
+    // Acionar o evento de submit do formulário para reutilizar a lógica
+    // Usando um evento personalizado para evitar loops
+    const customEvent = new CustomEvent('submit', { cancelable: true });
+    const handled = document.getElementById('youtubeForm').dispatchEvent(customEvent);
+    
+    return false;
+}
