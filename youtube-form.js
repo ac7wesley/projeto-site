@@ -1,176 +1,161 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const youtubeForm = document.getElementById('youtubeForm');
-    const youtubeUrlInput = document.getElementById('youtubeUrl');
-    const youtubePreview = document.getElementById('youtubePreview');
-    const previewFrame = document.getElementById('previewFrame');
+    const form = document.getElementById('youtubeForm');
+    const linkInput = document.getElementById('linkInput');
+    const textInput = document.getElementById('textInput');
+    const contentUrl = document.getElementById('contentUrl');
+    const contentText = document.getElementById('contentText');
     
-    // Configurações específicas para o formulário do YouTube
-    const YOUTUBE_CONFIG = {
-        webhookUrlYoutube: "https://n8n.logoscorretoradeseguros.com.br/webhook/youtube-transcript"
+    // Configurações do webhook
+    const WEBHOOK_CONFIG = {
+        url: "https://n8n.logoscorretoradeseguros.com.br/webhook/youtube-transcript"
     };
     
-    // Função para extrair o ID do vídeo do YouTube a partir da URL
-    function extractYoutubeId(url) {
-        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-        const match = url.match(regExp);
-        return (match && match[2].length === 11) ? match[2] : null;
-    }
-    
-    // Função para mostrar pré-visualização do vídeo
-    function showPreview(url) {
-        const videoId = extractYoutubeId(url);
+    // Função para atualizar placeholders
+    function updatePlaceholder() {
+        const platform = document.querySelector('input[name="platform"]:checked').value;
         
-        if (videoId) {
-            previewFrame.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-            youtubePreview.style.display = 'block';
-            return true;
+        if (platform === 'youtube') {
+            contentUrl.placeholder = 'https://www.youtube.com/watch?v=...';
+            contentText.placeholder = 'Digite o roteiro do vídeo do YouTube aqui...';
         } else {
-            previewFrame.innerHTML = '';
-            youtubePreview.style.display = 'none';
-            return false;
+            contentUrl.placeholder = 'https://www.youtube.com/shorts/...';
+            contentText.placeholder = 'Digite o roteiro do Shorts aqui...';
         }
     }
-    
-    // Evento para mostrar pré-visualização quando o usuário digita a URL
-    youtubeUrlInput.addEventListener('blur', function() {
-        showPreview(this.value);
+
+    // Gerenciar mudança de plataforma
+    document.querySelectorAll('input[name="platform"]').forEach(radio => {
+        radio.addEventListener('change', updatePlaceholder);
     });
-    
+
+    // Gerenciar mudança de tipo de conteúdo
+    document.querySelectorAll('input[name="contentType"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const isText = this.value === 'text';
+            linkInput.style.display = isText ? 'none' : 'block';
+            textInput.style.display = isText ? 'block' : 'none';
+            
+            // Remove required de ambos os campos
+            contentUrl.required = false;
+            contentText.required = false;
+            
+            // Adiciona required apenas no campo visível
+            if (isText) {
+                contentText.required = true;
+                contentUrl.value = '';
+            } else {
+                contentUrl.required = true;
+                contentText.value = '';
+            }
+        });
+    });
+
+    // Função para validar URL do YouTube
+    function validateYoutubeUrl(url) {
+        return /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)[a-zA-Z0-9_-]{11}/.test(url);
+    }
+
+    // Função para validar URL do Shorts
+    function validateShortsUrl(url) {
+        return /^(https?:\/\/)?(www\.)?youtube\.com\/shorts\/[a-zA-Z0-9_-]+/.test(url);
+    }
+
+    // Função para mostrar erro
+    function showError(element, message) {
+        element.classList.add('input-error');
+        const errorDiv = element.parentElement.querySelector('.error-message');
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
+        
+        element.addEventListener('input', function() {
+            element.classList.remove('input-error');
+            errorDiv.style.display = 'none';
+        }, { once: true });
+    }
+
     // Evento de envio do formulário
-    youtubeForm.addEventListener('submit', function(e) {
+    form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
-        const youtubeUrl = youtubeUrlInput.value;
-        const descricao = document.getElementById('descricao').value;
+        const platform = document.querySelector('input[name="platform"]:checked').value;
+        const contentType = document.querySelector('input[name="contentType"]:checked').value;
+        let conteudoParaEnviar = '';
         
-        // Validar URL do YouTube
-        if (!showPreview(youtubeUrl)) {
-            alert('Por favor, insira uma URL válida do YouTube.');
-            return;
-        }
-        
-        // Preparar dados para envio
-        const dados = {
-            youtubeUrl: youtubeUrl,
-            videoId: extractYoutubeId(youtubeUrl),
-            descricao: descricao,
-            timestamp: new Date().toISOString(),
-            origem: 'formulario-youtube'
-        };
-        
-        // Enviar para webhook
-        enviarParaWebhook(dados);
-    });
-    
-    /**
-     * Envia os dados do formulário para o webhook
-     * @param {Object} dados - Dados do formulário
-     */
-    function enviarParaWebhook(dados) {
-        // URL do webhook para processamento de vídeos do YouTube
-        const webhookUrl = YOUTUBE_CONFIG.webhookUrlYoutube;
-        
-        console.log("Iniciando envio para webhook:", webhookUrl);
-        console.log("Dados a serem enviados:", dados);
-        
-        // Mostrar indicador de carregamento
-        const submitButton = youtubeForm.querySelector('button[type="submit"]');
-        const originalText = submitButton.textContent;
-        submitButton.disabled = true;
-        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
-        
-        // Enviar dados para o webhook com configurações CORS
-        fetch(webhookUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Origin': window.location.origin
-            },
-            mode: 'cors',
-            credentials: 'omit',
-            body: JSON.stringify(dados)
-        })
-        .then(response => {
-            console.log("Resposta recebida - Status:", response.status);
-            
-            if (!response.ok) {
-                throw new Error(`Erro ${response.status}: ${response.statusText}`);
+        try {
+            // Validação e preparação do conteúdo
+            if (contentType === 'link') {
+                const url = contentUrl.value.trim();
+                if (platform === 'youtube' && !validateYoutubeUrl(url)) {
+                    showError(contentUrl, 'Por favor, insira um link válido do YouTube');
+                    return false;
+                } else if (platform === 'shorts' && !validateShortsUrl(url)) {
+                    showError(contentUrl, 'Por favor, insira um link válido do Shorts');
+                    return false;
+                }
+                conteudoParaEnviar = url;
+            } else {
+                const texto = contentText.value.trim();
+                if (!texto) {
+                    showError(contentText, 'O texto não pode estar vazio');
+                    return false;
+                }
+                conteudoParaEnviar = texto;
             }
+
+            // Preparar dados para envio
+            const dados = {
+                plataforma: platform,
+                tipo_conteudo: contentType,
+                conteudo: conteudoParaEnviar,
+                timestamp: new Date().toISOString(),
+                origem_sistema: "criador-roteiro",
+                tipo_lead: "roteiro"
+            };
+
+            // Mostrar indicador de carregamento
+            const submitButton = form.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Enviando...';
+
+            // Enviar para o webhook
+            const response = await fetch(WEBHOOK_CONFIG.url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(dados)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Erro no envio: ${response.status}`);
+            }
+
+            // Limpar formulário e resetar estado
+            form.reset();
+            contentUrl.value = '';
+            contentText.value = '';
+            contentUrl.classList.remove('input-error');
+            contentText.classList.remove('input-error');
+            document.querySelectorAll('.error-message').forEach(msg => {
+                msg.style.display = 'none';
+            });
             
-            return response.text();
-        })
-        .then(data => {
-            console.log("Resposta completa:", data);
+            // Atualizar placeholders e visibilidade dos campos
+            updatePlaceholder();
+            const isText = document.querySelector('input[name="contentType"]:checked').value === 'text';
+            linkInput.style.display = isText ? 'none' : 'block';
+            textInput.style.display = isText ? 'block' : 'none';
+
+            alert('Conteúdo enviado com sucesso!');
             
-            // Mostrar mensagem de sucesso
-            alert('Vídeo enviado com sucesso! Obrigado pelo envio.');
-            
-            // Limpar formulário
-            youtubeForm.reset();
-            youtubePreview.style.display = 'none';
-        })
-        .catch(error => {
-            console.error("Erro ao enviar dados:", error);
-            
-            // Tentar alternativa com proxy CORS
-            usarProxyCORS(webhookUrl, dados, submitButton, originalText);
-        })
-        .finally(() => {
-            // Restaurar botão (caso não tenha sido redirecionado para o proxy)
+        } catch (error) {
+            console.error('Erro ao enviar dados:', error);
+            alert('Erro ao enviar o conteúdo. Por favor, tente novamente.');
+        } finally {
+            const submitButton = form.querySelector('button[type="submit"]');
             submitButton.disabled = false;
-            submitButton.textContent = originalText;
-        });
-    }
-    
-    /**
-     * Tenta enviar os dados usando um proxy CORS como alternativa
-     * @param {string} url - URL original do webhook
-     * @param {Object} dados - Dados a serem enviados
-     * @param {HTMLElement} button - Botão de submit
-     * @param {string} originalText - Texto original do botão
-     */
-    function usarProxyCORS(url, dados, button, originalText) {
-        console.log("Tentando envio alternativo via proxy CORS...");
-        
-        // Usar um serviço de proxy CORS público
-        const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
-        
-        fetch(proxyUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify(dados)
-        })
-        .then(response => {
-            console.log("Resposta do proxy recebida - Status:", response.status);
-            
-            if (!response.ok) {
-                throw new Error(`Erro no proxy ${response.status}: ${response.statusText}`);
-            }
-            
-            return response.text();
-        })
-        .then(data => {
-            console.log("Resposta completa do proxy:", data);
-            
-            // Mostrar mensagem de sucesso
-            alert('Vídeo enviado com sucesso! Obrigado pelo envio.');
-            
-            // Limpar formulário
-            youtubeForm.reset();
-            youtubePreview.style.display = 'none';
-        })
-        .catch(error => {
-            console.error("Erro ao enviar via proxy:", error);
-            alert(`Não foi possível enviar o vídeo. Por favor, tente novamente mais tarde ou entre em contato com o suporte.`);
-        })
-        .finally(() => {
-            // Restaurar botão
-            button.disabled = false;
-            button.textContent = originalText;
-        });
-    }
+            submitButton.textContent = 'Enviar Conteúdo';
+        }
+    });
 });
