@@ -20,6 +20,16 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
+        if (contentType === 'seguros') {
+            contentText.placeholder = 'Digite o contexto sobre seguros aqui...';
+            return;
+        }
+        
+        if (contentType === 'consorcios') {
+            contentText.placeholder = 'Digite o contexto sobre consórcios aqui...';
+            return;
+        }
+        
         if (platform === 'youtube') {
             contentUrl.placeholder = 'https://www.youtube.com/watch?v=...';
             contentText.placeholder = 'Digite o roteiro do vídeo do YouTube aqui...';
@@ -39,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
             contentUrl.required = true;
             contentText.required = false;
         } else {
-            // Tanto para 'text' quanto para 'newContext', mostramos o campo de texto
+            // Tanto para 'text', 'newContext', 'seguros' e 'consorcios', mostramos o campo de texto
             linkInput.style.display = 'none';
             textInput.style.display = 'block';
             contentUrl.required = false;
