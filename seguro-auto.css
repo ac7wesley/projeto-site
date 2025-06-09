@@ -117,6 +117,7 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
+    text-decoration: none;
 }
 
 .btn-primary:hover {
@@ -715,6 +716,13 @@ footer ul li a:hover {
     display: flex;
     flex-direction: column;
   }
+  
+  /* Configuração do logo do footer */
+  .footer-logo {
+    height: 240px;
+    margin-top: -40px;
+    margin-bottom: -40px;
+  }
 }
 
 /* Ajustes para telas muito pequenas */
@@ -747,30 +755,50 @@ footer ul li a:hover {
     margin-bottom: 0.25rem; /* Reduzido ainda mais */
   }
   
-  /* Redução do tamanho da fonte */
-  footer ul li, footer .text-gray-400 {
-    font-size: 0.9rem;
-  }
-  
-  /* Redução do tamanho da logo */
-  footer .footer-logo {
-    max-width: 280px;
-    margin-top: -5rem;
-    margin-bottom: -9rem;
-  }
-  
-  /* Ajuste do texto de copyright */
-  footer .border-t p {
-    font-size: 0.8rem;
-    padding: 0 0.5rem; /* Reduzido o padding horizontal */
-  }
-  
-  /* Redução do padding horizontal */
-  footer .px-4 {
-    padding-left: 0.5rem; /* Reduzido */
-    padding-right: 0.5rem; /* Reduzido */
+  /* Configuração do logo do footer para telas muito pequenas */
+  .footer-logo {
+    height: 290px;
+    margin-top: -130px;
+    margin-bottom: -130px;
   }
 }
+/*------------------------------------------------------*/
+/* Estilos para o formulário */
+/* Footer */
+.footer {
+  background: #1f2937;
+  color: white;
+  padding: 4rem 0;
+}
+
+.footer-logo {
+  height: 250px;
+  margin-top: -50px;
+  margin-bottom: -50px;
+}
+
+.footer-description {
+  margin-top: 5px;  /* Ajusta o espaço entre o logo e o texto */
+  padding: 0 0px;     /* Adiciona padding lateral */
+  color: #9ca3af;      /* Mantém a cor cinza clara */
+}
+
+.footer-links {
+  list-style: none;
+}
+
+.footer-links a {
+  color: #9ca3af;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: white;
+}
+/*------------------------------------------------------*/
+/* Estilos para o formulário */
+/* Footer */
 
 #seguroAutoEtapa1, #seguroAutoEtapa2 {
     transition: all 0.3s ease;
