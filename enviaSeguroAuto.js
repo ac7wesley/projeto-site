@@ -381,7 +381,7 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 function enviarSeguroParaWebhook(dados) {
     // URL do webhook para seguro auto
-    const webhookUrl = CONFIG.webhookUrl || "https://instwesley-n8n.r1negz.easypanel.host/webhook/lead-auto";
+    const webhookUrl = CONFIG.webhookUrl || "https://webhook.soyuz.dpdns.org/webhook/leads";
     
     console.log("Iniciando envio para webhook de seguro auto:", webhookUrl);
     
@@ -529,7 +529,7 @@ function testarEnvioWebhook() {
     console.log("Dados de teste:", dadosTeste);
     
     // Tentar enviar para o webhook
-    const webhookUrl = "https://instwesley-n8n.r1negz.easypanel.host/webhook/lead-auto";
+    const webhookUrl = "https://webhook.soyuz.dpdns.org/webhook/leads";
     
     // Criar elemento visual para mostrar o status do teste
     const testeStatus = document.createElement('div');

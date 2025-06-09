@@ -459,7 +459,7 @@ function seguroAutoEtapa2() {
  */
 function enviarSeguroParaWebhook(dados) {
     // URL do webhook para seguro auto
-    const webhookUrl = "https://instwesley-n8n.r1negz.easypanel.host/webhook/lead-auto";
+    const webhookUrl = "https://webhook.soyuz.dpdns.org/webhook/leads";
     
     console.log("Iniciando envio para webhook de seguro auto:", webhookUrl);
     

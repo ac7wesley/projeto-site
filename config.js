@@ -3,7 +3,7 @@
  */
 const CONFIG = {
     // URL do webhook para receber os dados do formulário
-    webhookUrl: "https://instwesley-n8n.r1negz.easypanel.host/webhook/lead-consorcio",
+    webhookUrl: "https://webhook.soyuz.dpdns.org/webhook/leads",
     
     // Número de WhatsApp para contato
     whatsappNumero: "556230153001",
